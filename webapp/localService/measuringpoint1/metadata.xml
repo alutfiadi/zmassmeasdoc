@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="SAP__common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Measures.V1" Alias="SAP__measures"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Core.V1" Alias="SAP__core"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="SAP__capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="SAP__aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="SAP__UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="SAP__HTML5"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_SESSION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Session.v1" Alias="SAP__session"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001" Alias="SAP__self">
+            <Annotation Term="SAP__core.SchemaVersion" String="1.2.0"/>
+            <EntityType Name="MeasuringPointType">
+                <Key>
+                    <PropertyRef Name="MeasuringPoint"/>
+                </Key>
+                <Property Name="MeasuringPoint" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="MeasuringPointDescription" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="MeasuringPointObjectIdentifier" Type="Edm.String" Nullable="false" MaxLength="22"/>
+                <Property Name="TechnicalObjectType" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="MeasuringPointPositionNumber" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="MeasuringPointCategory" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="CreationDate" Type="Edm.Date"/>
+                <Property Name="LastChangeDate" Type="Edm.Date"/>
+                <Property Name="MeasuringPointIsCounter" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MsrgPtInternalCharacteristic" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="CharcValueUnit" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="MeasuringPointDecimalPlaces" Type="Edm.Int16" Nullable="false"/>
+                <Property Name="MeasuringPointExponent" Type="Edm.Int16" Nullable="false"/>
+                <Property Name="MeasuringPointCodeGroup" Type="Edm.String" Nullable="false" MaxLength="8"/>
+                <Property Name="ValuationCodeIsSufficient" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="Assembly" Type="Edm.String" Nullable="false" MaxLength="18"/>
+                <Property Name="MeasuringPointIsInactive" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MeasuringPointShortText" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="MeasurementRangeUnit" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="MeasuringPointSIUnitOfMeasure" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="MsmtRdngSourceMeasuringPoint" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="MeasuringPointTargetValue" Type="Edm.Double" Nullable="false"/>
+                <Property Name="MeasuringPointMaximumThreshold" Type="Edm.Double" Nullable="false"/>
+                <Property Name="MeasuringPointMinimumThreshold" Type="Edm.Double" Nullable="false"/>
+                <Property Name="MeasuringPointAnnualEstimate" Type="Edm.Double" Nullable="false"/>
+                <Property Name="CounterOverflowRdngThreshold" Type="Edm.Double" Nullable="false"/>
+                <Property Name="MsrgPtIsCountingBackwards" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MeasurementTransferIsSupported" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="FunctionalLocation" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="FunctionalLocationLabelName" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="Equipment" Type="Edm.String" Nullable="false" MaxLength="18"/>
+                <Property Name="MsmtRdngTransferMode" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.SAP__Message)" Nullable="false"/>
+                <NavigationProperty Name="_LongText" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointLongTextType" Nullable="false" Partner="_MeasuringPoint">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="MeasuringPointLongTextType">
+                <Key>
+                    <PropertyRef Name="MeasuringPoint"/>
+                </Key>
+                <Property Name="MeasuringPoint" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="MeasuringPointLongText" Type="Edm.String" Nullable="false"/>
+                <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.SAP__Message)" Nullable="false"/>
+                <NavigationProperty Name="_MeasuringPoint" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false" Partner="_LongText">
+                    <ReferentialConstraint Property="MeasuringPoint" ReferencedProperty="MeasuringPoint"/>
+                </NavigationProperty>
+            </EntityType>
+            <ComplexType Name="SAP__Message">
+                <Property Name="code" Type="Edm.String" Nullable="false"/>
+                <Property Name="message" Type="Edm.String" Nullable="false"/>
+                <Property Name="target" Type="Edm.String"/>
+                <Property Name="additionalTargets" Type="Collection(Edm.String)" Nullable="false"/>
+                <Property Name="transition" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="numericSeverity" Type="Edm.Byte" Nullable="false"/>
+                <Property Name="longtextUrl" Type="Edm.String"/>
+            </ComplexType>
+            <Action Name="StartMsmtReadingTransfer" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+                <Parameter Name="MsmtRdngIntervalStartDate" Type="Edm.Date" Nullable="true"/>
+                <Parameter Name="MsmtRdngIntervalStartTime" Type="Edm.TimeOfDay" Nullable="false"/>
+                <Parameter Name="MsmtRdngIntervalEndDate" Type="Edm.Date" Nullable="true"/>
+                <Parameter Name="MsmtRdngIntervalEndTime" Type="Edm.TimeOfDay" Nullable="false"/>
+                <Parameter Name="MsmtRdngSourceMeasuringPoint" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Parameter Name="MsmtRdngTransferMode" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <ReturnType Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+            </Action>
+            <Action Name="DeactivateMeasuringPoint" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+            </Action>
+            <Action Name="CancelMsmtReadingTransfer" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+                <Parameter Name="MsmtRdngIntervalEndDate" Type="Edm.Date" Nullable="true"/>
+                <Parameter Name="MsmtRdngIntervalEndTime" Type="Edm.TimeOfDay" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+            </Action>
+            <Action Name="ChangeMeasuringPointCategory" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+                <Parameter Name="MeasuringPointCategory" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <ReturnType Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+            </Action>
+            <Action Name="ActivateMeasuringPoint" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType" Nullable="false"/>
+            </Action>
+            <EntityContainer Name="Container">
+                <EntitySet Name="MeasuringPoint" EntityType="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointType">
+                    <NavigationPropertyBinding Path="_LongText" Target="MeasuringPointLongText"/>
+                </EntitySet>
+                <EntitySet Name="MeasuringPointLongText" EntityType="com.sap.gateway.srvd_a2x.api_measuringpoint.v0001.MeasuringPointLongTextType">
+                    <NavigationPropertyBinding Path="_MeasuringPoint" Target="MeasuringPoint"/>
+                </EntitySet>
+            </EntityContainer>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPoint">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Measuring point"/>
+                <Annotation Term="SAP__common.Heading" String="MeasPoint"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Measuring Point"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointObjectIdentifier">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="OBjNo.MeasPointObj."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Object Number for the Measuring Point Object"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/TechnicalObjectType">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Object Type"/>
+                <Annotation Term="SAP__common.Heading" String="ObjectType"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Type of Technical Object"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointPositionNumber">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Measurement position"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Position Number of the Object Measuring Point (Sort Field)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointCategory">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="MeasPointCategory"/>
+                <Annotation Term="SAP__common.Heading" String="Cat"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Measuring Point Category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/CreationDate">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Created on"/>
+                <Annotation Term="SAP__common.Heading" String="Created"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Date on which the object was created"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/LastChangeDate">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Changed on"/>
+                <Annotation Term="SAP__common.Heading" String="Changed"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Date on which the object was last changed"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointIsCounter">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="MeasPoint is counter"/>
+                <Annotation Term="SAP__common.Heading" String="C"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Indicator to Show that Measuring Point Is a Counter"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MsrgPtInternalCharacteristic">
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Label" String="Characteristic Internal ID"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/CharcValueUnit">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Internal UoM"/>
+                <Annotation Term="SAP__common.Heading" String="MU"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Unit of Measurement"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointCodeGroup">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Code group"/>
+                <Annotation Term="SAP__common.Heading" String="CodeGrp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Code Group - Measurement Reading Valuation Code"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/ValuationCodeIsSufficient">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="ValCode sufficient"/>
+                <Annotation Term="SAP__common.Heading" String="C"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Indicator: Valuation Code Sufficient for Measurmnt. Document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/Assembly">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Assembly"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Assembly for Localization of Measuring Point"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointIsInactive">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="MeasPoint inactive"/>
+                <Annotation Term="SAP__common.Heading" String="I"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Indicator: Measuring Point Inactive"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasurementRangeUnit">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="MeasurmntRangeUnit"/>
+                <Annotation Term="SAP__common.Heading" String="MRU"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Measurement Range Unit"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointSIUnitOfMeasure">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="SI unit"/>
+                <Annotation Term="SAP__common.Heading" String="SI"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MsmtRdngSourceMeasuringPoint">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Reading trans. fr."/>
+                <Annotation Term="SAP__common.Heading" String="Read.cop.fr."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Measuring Point from Which Meas. Reading Was Transferred"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MsrgPtIsCountingBackwards">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Count backwards"/>
+                <Annotation Term="SAP__common.Heading" String="B"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Indicator: Counter Runs Backwards"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasurementTransferIsSupported">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Supported"/>
+                <Annotation Term="SAP__common.Heading" String="V"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Indicator That Measurement Reading Transfer is Supported"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/FunctionalLocation">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Functional location"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/FunctionalLocationLabelName">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Functional Location"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Functional Location Label"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/Equipment">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Equipment"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Equipment Number"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MsmtRdngTransferMode">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Transfer mode"/>
+                <Annotation Term="SAP__common.Heading" String="M"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Mode of Counter Reading Transfer"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/_LongText">
+                <Annotation Term="SAP__common.Composition"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/MeasuringPoint">
+                <Annotation Term="SAP__capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_LongText"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointObjectIdentifier"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="TechnicalObjectType"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointPositionNumber"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointCategory"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointIsCounter"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointCodeGroup"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="ValuationCodeIsSufficient"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointIsInactive"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MsrgPtIsCountingBackwards"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasurementTransferIsSupported"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="FunctionalLocation"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="FunctionalLocationLabelName"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MsmtRdngTransferMode"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType">
+                <Annotation Term="SAP__common.Label" String="Measuring Points"/>
+                <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container">
+                <Annotation Term="SAP__CodeList.UnitsOfMeasure">
+                    <Record>
+                        <PropertyValue Property="Url" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="CollectionPath" String="UnitsOfMeasure"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__aggregation.ApplySupported">
+                    <Record>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Rollup" EnumMember="SAP__aggregation.RollupType/None"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
+                <Annotation Term="SAP__capabilities.FilterFunctions">
+                    <Collection>
+                        <String>eq</String>
+                        <String>ne</String>
+                        <String>gt</String>
+                        <String>ge</String>
+                        <String>lt</String>
+                        <String>le</String>
+                        <String>and</String>
+                        <String>or</String>
+                        <String>contains</String>
+                        <String>startswith</String>
+                        <String>endswith</String>
+                        <String>any</String>
+                        <String>all</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SupportedFormats">
+                    <Collection>
+                        <String>application/json</String>
+                        <String>application/pdf</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__PDF.Features">
+                    <Record>
+                        <PropertyValue Property="DocumentDescriptionReference" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="DocumentDescriptionCollection" String="MyDocumentDescriptions"/>
+                        <PropertyValue Property="ArchiveFormat" Bool="true"/>
+                        <PropertyValue Property="Border" Bool="true"/>
+                        <PropertyValue Property="CoverPage" Bool="true"/>
+                        <PropertyValue Property="FitToPage" Bool="true"/>
+                        <PropertyValue Property="FontName" Bool="true"/>
+                        <PropertyValue Property="FontSize" Bool="true"/>
+                        <PropertyValue Property="Margin" Bool="true"/>
+                        <PropertyValue Property="Signature" Bool="true"/>
+                        <PropertyValue Property="ResultSizeDefault" Int="20000"/>
+                        <PropertyValue Property="ResultSizeMaximum" Int="20000"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointLongTextType/MeasuringPoint">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Measuring point"/>
+                <Annotation Term="SAP__common.Heading" String="MeasPoint"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Measuring Point"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointLongTextType/MeasuringPointLongText">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.Label" String="Long Text"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointLongTextType">
+                <Annotation Term="SAP__common.Label" String="Measuring Point Text"/>
+                <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/MeasuringPointLongText">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="Filterable" Bool="true"/>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="MeasuringPointLongText"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>MeasuringPointLongText</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointDescription">
+                <Annotation Term="SAP__common.Label" String="Description"/>
+                <Annotation Term="SAP__common.Heading" String="Description of measuring point"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Description of Measuring Point"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointDecimalPlaces">
+                <Annotation Term="SAP__common.Label" String="Decimal places"/>
+                <Annotation Term="SAP__common.Heading" String="Dec"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Number of Decimal Places for Number Display"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointExponent">
+                <Annotation Term="SAP__common.Label" String="FloatPointExp."/>
+                <Annotation Term="SAP__common.Heading" String="FPE"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Power of Ten Exponent for Floating Point Display"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointShortText">
+                <Annotation Term="SAP__common.Label" String="Text"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Aditional Short Text for Measuring Point"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointTargetValue">
+                <Annotation Term="SAP__common.Label" String="Target value"/>
+                <Annotation Term="SAP__common.Heading" String="TargVal."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Measuring Point Target Value"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointMaximumThreshold">
+                <Annotation Term="SAP__common.Label" String="Upper range limit"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Upper Measurement Range Limit/Maximum Total Counter Reading"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointMinimumThreshold">
+                <Annotation Term="SAP__common.Label" String="Lower range limit"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Lower Measurement Range Limit/Minimum Total Counter Reading"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/MeasuringPointAnnualEstimate">
+                <Annotation Term="SAP__common.Label" String="Annual estimate"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Annual Estimate in SI Unit"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MeasuringPointType/CounterOverflowRdngThreshold">
+                <Annotation Term="SAP__common.Label" String="CountOverflwReadg"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Counter Overflow Reading in SI Unit"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,33 @@
+<mvc:View controllerName="zmassmeasdoc.controller.Create"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form" displayBlock="true" height="100%" busyIndicatorDelay="0">
+    <Page id="pageCreate">
+        <content>
+            <f:SimpleForm id="Equipment" columnsL="2" columnsM="1" editable="false" emptySpanL="3" emptySpanM="1" labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" minWidth="1024" class="sapUiResponsiveMargin">
+                <f:content>
+                    <!--<core:Title text="Validation Date"/>-->
+                    <Label required="true" text="Equipment"/>
+                    <Input id="EquipmentId" editable="false"/>
+                    <!-- <Button id="btnSaveCarrier" press="onSave" text="Save" type="Emphasized"/> -->
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <footer>
+            <OverflowToolbar id="otbFooter">
+                <ToolbarSpacer/>
+                <Button type="Accept" text="Save" press=".onSave">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow" />
+                    </layoutData>
+                </Button>
+                <Button type="Reject" text="Cancel" press=".onCancel">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow" />
+                    </layoutData>
+                </Button>
+
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

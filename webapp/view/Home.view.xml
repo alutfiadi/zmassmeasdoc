@@ -1,0 +1,54 @@
+<mvc:View controllerName="zmassmeasdoc.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <f:Form id="FormDisplay354" editable="true" width="100%">
+                <f:title>
+                    <core:Title text="{i18n>refObject}" />
+                </f:title>
+                <f:layout>
+                    <f:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="true" />
+                </f:layout>
+                <f:formContainers>
+                    <f:FormContainer >
+                        <f:formElements>
+                            <f:FormElement label="{i18n>refObjectType}">
+                                <f:fields>
+                                    <ComboBox id="refObjectType" selectedKey="PM" change="onChangeObjectType">
+                                        <core:Item key="PM" text="Technical Object" />
+                                        <core:Item key="RE" text="RE: Rental Unit"/>
+                                    </ComboBox>
+                                    <!-- <Input value="" id="refObjectType" class="sapUiSmallMarginBottom" required="true" type="Number" maxLength="3" showValueHelp="true" valueHelpRequest="handleMeasuringPointVH"/> -->
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="{i18n>techObject}" id="feTechnicalObject">
+                                <f:fields>
+                                    <!-- <Input value="" id="technicalObject" class="sapUiSmallMarginBottom" required="true" type="Number" maxLength="3" showValueHelp="true" valueHelpRequest="handleTechnicalObjectVH"/> -->
+                                    <MultiInput id="technicalObject" width="100%" valueHelpRequest=".handleTechnicalObjectVH" maxTokens="1" required="true" />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="{i18n>realestatetype}" id="feRentalUnit" visible="false">
+                                <f:fields>
+                                    <Input value="" id="rentalUnit" class="sapUiSmallMarginBottom" required="true" type="Number" maxLength="3" showValueHelp="true" valueHelpRequest="handleMeasuringPointVH"/>
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+                </f:formContainers>
+            </f:Form>
+        </content>
+        <footer>
+            <OverflowToolbar id="otbFooter">
+                <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+                <Button id="_IDGenButton1" type="Accept" text="Submit" press="onSubmit">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="_IDGenOverflowToolbarLayoutData1" priority="NeverOverflow" />
+                    </layoutData>
+                </Button>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>
