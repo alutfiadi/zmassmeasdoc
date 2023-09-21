@@ -7,7 +7,7 @@
         <content>
             <f:Form id="FormDisplay354" editable="true" width="100%">
                 <f:title>
-                    <core:Title text="{i18n>refObject}" />
+                    <!-- <core:Title text="{i18n>refObject}" /> -->
                 </f:title>
                 <f:layout>
                     <f:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="true" />
@@ -17,7 +17,7 @@
                         <f:formElements>
                             <f:FormElement label="{i18n>refObjectType}">
                                 <f:fields>
-                                    <ComboBox id="refObjectType" selectedKey="PM" change="onChangeObjectType">
+                                    <ComboBox id="refObjectType" selectedKey="PM" change="onChangeObjectType" editable="false">
                                         <core:Item key="PM" text="Technical Object" />
                                         <core:Item key="RE" text="RE: Rental Unit"/>
                                     </ComboBox>
