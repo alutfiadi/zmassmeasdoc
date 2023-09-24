@@ -57,9 +57,11 @@ sap.ui.define(
       onSubmit: function() {
         var technicalObject = this.byId("technicalObject").getTokens();
         if (technicalObject.length > 0) {
-          technicalObject = technicalObject[0].getKey();
+          const equipmentid = technicalObject[0].getKey();
+          const equipmentname = technicalObject[0].getText();
           this.getRouter().navTo("Create", {
-            equipment: technicalObject
+            equipment: equipmentid,
+            equipmentname: equipmentname
           });
         } else {
           this.byId("technicalObject").setValueState("Error");
@@ -143,7 +145,7 @@ sap.ui.define(
                     new UIColumn({
                       label: new Label({ text: "Description" }),
                       template: new Text({
-                        wrapping: false,
+                        wrapping: true,
                         text: "{TechnicalObjectDescription}"
                       }),
                       demandPopin: "true",
@@ -162,7 +164,10 @@ sap.ui.define(
                       cells: [
                         new Label({ text: "{ZTechnicalObjectType}" }),
                         new Label({ text: "{TechnicalObject}" }),
-                        new Label({ text: "{TechnicalObjectDescription}" })
+                        new Label({
+                          text: "{TechnicalObjectDescription}",
+                          wrapping: true
+                        })
                       ]
                     }),
                     events: {

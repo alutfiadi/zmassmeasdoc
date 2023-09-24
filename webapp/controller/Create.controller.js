@@ -30,11 +30,12 @@ sap.ui.define(
       onRouteMatched: function(oEvent) {
         const that = this;
         let oModelPoint = this.getModel("measuringpoint");
-        let equipmentid = oEvent.getParameters().arguments.equipment;
+        this.equipmentid = oEvent.getParameters().arguments.equipment;
+        this.equipmentname = oEvent.getParameters().arguments.equipmentname;
         let aFilter = new Filter(
           "Equipment",
           sap.ui.model.FilterOperator.EQ,
-          equipmentid
+          this.equipmentid
         );
 
         let oList = oModelPoint.bindList(
@@ -45,12 +46,28 @@ sap.ui.define(
           undefined
         );
 
+        this.byId("EquipmentId").setValue(this.equipmentname);
         this.mPoints = [];
         oList.requestContexts(0, 100).then(function(aContexts) {
-          aContexts.forEach(function(oContext) {
-            // As we have fetched the data already, we build panel from emasruing pints data
-            that.createPanel(oContext);
-          });
+          if (aContexts.length == 0) {
+            // console.log("NO DATA");
+            // No Measuring Point
+            MessageBox.information(
+              "No Measuring Points for " + that.equipmentid,
+              {
+                actions: [MessageBox.Action.OK],
+                emphasizedAction: MessageBox.Action.OK,
+                onClose: function(sAction) {
+                  that.getRouter().navTo("RouteHome");
+                }
+              }
+            );
+          } else {
+            aContexts.forEach(function(oContext) {
+              // As we have fetched the data already, we build panel from emasruing pints data
+              that.createPanel(oContext);
+            });
+          }
         });
       },
 
@@ -64,7 +81,6 @@ sap.ui.define(
         let today = new Date();
         let read_by = sap.ushell.Container.getService("UserInfo").getId();
         let equipment = oItem.getProperty("Equipment");
-        this.byId("EquipmentId").setValue(equipment);
 
         // Create a panel for each item
         let panelId = this.createId("panel" + MeasuringPoint);

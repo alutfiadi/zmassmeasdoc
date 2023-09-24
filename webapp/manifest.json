@@ -137,7 +137,7 @@
                 },
                 {
                     "name": "Create",
-                    "pattern": "Create/{equipment}",
+                    "pattern": "Create/{equipment},{equipmentname}",
                     "target": [
                         "TargetCreate"
                     ]

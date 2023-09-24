@@ -27,12 +27,7 @@
                             <f:FormElement label="{i18n>techObject}" id="feTechnicalObject">
                                 <f:fields>
                                     <!-- <Input value="" id="technicalObject" class="sapUiSmallMarginBottom" required="true" type="Number" maxLength="3" showValueHelp="true" valueHelpRequest="handleTechnicalObjectVH"/> -->
-                                    <MultiInput id="technicalObject" width="100%" valueHelpRequest=".handleTechnicalObjectVH" maxTokens="1" required="true" />
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="{i18n>realestatetype}" id="feRentalUnit" visible="false">
-                                <f:fields>
-                                    <Input value="" id="rentalUnit" class="sapUiSmallMarginBottom" required="true" type="Number" maxLength="3" showValueHelp="true" valueHelpRequest="handleMeasuringPointVH"/>
+                                    <MultiInput id="technicalObject" width="100%" valueHelpRequest=".handleTechnicalObjectVH" maxTokens="1" required="true" valueHelpOnly="true" showSuggestion="false"/>
                                 </f:fields>
                             </f:FormElement>
                         </f:formElements>
