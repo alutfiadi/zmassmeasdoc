@@ -146,7 +146,7 @@ sap.ui.define(
                       label: new Label({ text: "Description" }),
                       template: new Text({
                         wrapping: true,
-                        text: "{TechnicalObjectDescription}"
+                        text: "{TechnicalObjectLabel}"
                       }),
                       demandPopin: "true",
                       popinDisplay: "Inline",
@@ -165,7 +165,7 @@ sap.ui.define(
                         new Label({ text: "{ZTechnicalObjectType}" }),
                         new Label({ text: "{TechnicalObject}" }),
                         new Label({
-                          text: "{TechnicalObjectDescription}",
+                          text: "{TechnicalObjectLabel}",
                           wrapping: true
                         })
                       ]
@@ -188,7 +188,7 @@ sap.ui.define(
                   );
                   oTable.addColumn(
                     new MColumn({
-                      header: new Label({ text: "Description" }),
+                      header: new Label({ text: "Technical Object Label" }),
                       demandPopin: true,
                       popinDisplay: "Inline",
                       minScreenWidth: "Large"

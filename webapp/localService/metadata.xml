@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="Aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="Capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Measures.V1" Alias="Measures"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="./sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="Validation"/>
+    </edmx:Reference>
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZC_TECHOBJVH_CDS" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+            <EntityType Name="I_EquipmentStdVHType" sap:label="Equipment" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Equipment"/>
+                </Key>
+                <Property Name="Equipment" Type="Edm.String" Nullable="false" MaxLength="18" sap:display-format="UpperCase" sap:text="Equipment_Text" sap:label="Equipment" sap:quickinfo="Equipment Number"/>
+                <Property Name="Equipment_Text" Type="Edm.String" MaxLength="40" sap:label="Description" sap:quickinfo="Description of technical object" sap:creatable="false" sap:updatable="false"/>
+            </EntityType>
+            <EntityType Name="I_FunctionalLocationStdVHType" sap:label="Functional Location" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="FunctionalLocation"/>
+                </Key>
+                <Property Name="FunctionalLocation" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:text="FunctionalLocation_Text" sap:label="Functional Location"/>
+                <Property Name="FunctionalLocation_Text" Type="Edm.String" MaxLength="40" sap:label="Description" sap:quickinfo="Description of functional location" sap:creatable="false" sap:updatable="false"/>
+            </EntityType>
+            <EntityType Name="I_TechnicalObjectTypeStdVHType" sap:label="Techncial Object Type" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="TechnicalObjectType"/>
+                </Key>
+                <Property Name="TechnicalObjectType" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="TechnicalObjectType_Text" sap:label="Object Type" sap:quickinfo="Type of Technical Object"/>
+                <Property Name="TechnicalObjectType_Text" Type="Edm.String" MaxLength="20" sap:label="Object type text" sap:quickinfo="Text for Object Type" sap:creatable="false" sap:updatable="false"/>
+            </EntityType>
+            <EntityType Name="ZC_TECHOBJVHType" sap:label="Tehcnical Object CDS" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="TechnicalObject"/>
+                    <PropertyRef Name="TechObjIsEquipOrFuncnlLoc"/>
+                </Key>
+                <Property Name="TechnicalObject" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:text="TechnicalObjectDescription" sap:label="Technical Object"/>
+                <Property Name="TechObjIsEquipOrFuncnlLoc" Type="Edm.String" Nullable="false" MaxLength="20" sap:display-format="UpperCase" sap:label="Tech. Obj. Type" sap:quickinfo="Technical Object Type"/>
+                <Property Name="ZTechnicalObjectType" Type="Edm.String" MaxLength="19"/>
+                <Property Name="Equipment" Type="Edm.String" MaxLength="18" sap:display-format="UpperCase" sap:label="Equipment" sap:quickinfo="Equipment Number" sap:value-list="standard"/>
+                <Property Name="FunctionalLocation" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Functional Location" sap:value-list="standard"/>
+                <Property Name="TechnicalObjectLabel" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Technical Object" sap:quickinfo="Technical Object Identifier"/>
+                <Property Name="TechnicalObjectType" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Object Type" sap:quickinfo="Type of Technical Object" sap:value-list="standard"/>
+                <Property Name="TechnicalObjectDescription" Type="Edm.String" MaxLength="40" sap:label="Tech. Obj. Desc" sap:quickinfo="Technical Object Description"/>
+                <Property Name="TechnicalObjectHasLongText" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Long Text" sap:quickinfo="Long Text Indicator"/>
+                <Property Name="SuperiorTechnicalObjectName" Type="Edm.String" MaxLength="40" sap:label="Tech. Obj. Desc" sap:quickinfo="Technical Object Description"/>
+                <Property Name="SuperiorTechnicalObjectLabel" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Technical Object" sap:quickinfo="Technical Object Identifier"/>
+                <Property Name="IsDeleted" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Deletion Indicator"/>
+                <Property Name="TechObjStatusIsInactive" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Inactive Indicator"/>
+                <Property Name="Material" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Material" sap:quickinfo="Material Number"/>
+                <Property Name="SerialNumber" Type="Edm.String" MaxLength="18" sap:display-format="UpperCase" sap:label="Serial Number"/>
+            </EntityType>
+            <EntityContainer Name="ZC_TECHOBJVH_CDS_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="I_EquipmentStdVH" EntityType="ZC_TECHOBJVH_CDS.I_EquipmentStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="I_FunctionalLocationStdVH" EntityType="ZC_TECHOBJVH_CDS.I_FunctionalLocationStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="I_TechnicalObjectTypeStdVH" EntityType="ZC_TECHOBJVH_CDS.I_TechnicalObjectTypeStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZC_TECHOBJVH" EntityType="ZC_TECHOBJVH_CDS.ZC_TECHOBJVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+            </EntityContainer>
+            <Annotations Target="ZC_TECHOBJVH_CDS.ZC_TECHOBJVHType/Equipment" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Equipment"/>
+                        <PropertyValue Property="CollectionPath" String="I_EquipmentStdVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="Equipment"/>
+                                    <PropertyValue Property="ValueListProperty" String="Equipment"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Equipment_Text"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZC_TECHOBJVH_CDS.ZC_TECHOBJVHType/FunctionalLocation" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Functional Location"/>
+                        <PropertyValue Property="CollectionPath" String="I_FunctionalLocationStdVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="FunctionalLocation"/>
+                                    <PropertyValue Property="ValueListProperty" String="FunctionalLocation"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="FunctionalLocation_Text"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZC_TECHOBJVH_CDS.ZC_TECHOBJVHType/TechnicalObjectType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Techncial Object Type"/>
+                        <PropertyValue Property="CollectionPath" String="I_TechnicalObjectTypeStdVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="TechnicalObjectType"/>
+                                    <PropertyValue Property="ValueListProperty" String="TechnicalObjectType"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="TechnicalObjectType_Text"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZC_TECHOBJVH_CDS.ZC_TECHOBJVH_CDS_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
+            </Annotations>
+            <atom:link rel="self" href="http://smlhanaapp.sinarmasland.net:8000/sap/opu/odata/sap/ZC_TECHOBJVH_CDS/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://smlhanaapp.sinarmasland.net:8000/sap/opu/odata/sap/ZC_TECHOBJVH_CDS/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

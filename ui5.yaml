@@ -16,12 +16,12 @@ server:
             - /test-resources
           url: https://ui5.sap.com
         backend:
-          - path: /sap
+          - path: /sap/opu/odata/sap/ZC_TECHOBJVH_CDS
             url: http://smlhanaapp.sinarmasland.net:8000
             client: "800"
           - path: /sap
             url: http://smlhanaapp.sinarmasland.net:8000
-            client: '800'
+            client: "800"
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -32,4 +32,4 @@ server:
       afterMiddleware: fiori-tools-appreload
       configuration:
         component: zmassmeasdoc
-        ui5Theme: sap_horizon
+        ui5Theme: sap_fiori_3
