@@ -2,7 +2,7 @@
     xmlns:m="sap.m"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:core="sap.ui.core">
-    <ValueHelpDialog title="Technical Object" supportMultiselect="false" ok=".onValueHelpOkPress" cancel=".onValueHelpCancelPress" afterClose=".onValueHelpAfterClose" supportRanges="false" key="TechnicalObject" descriptionKey="TechnicalObjectDescription">
+    <ValueHelpDialog title="Technical Object" supportMultiselect="false" ok=".onValueHelpOkPress" cancel=".onValueHelpCancelPress" afterClose=".onValueHelpAfterClose" supportRanges="false" key="TechnicalObjectLabel" descriptionKey="TechnicalObjectDescription">
         <filterBar>
             <fb:FilterBar advancedMode="true" search=".onFilterBarSearch" isRunningInValueHelpDialog="true">
                 <fb:filterGroupItems>

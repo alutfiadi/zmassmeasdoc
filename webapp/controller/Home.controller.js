@@ -11,7 +11,9 @@ sap.ui.define(
     "sap/ui/model/odata/v2/ODataModel",
     "sap/ui/table/Column",
     "sap/m/Column",
-    "sap/m/Text"
+    "sap/m/Text",
+    "sap/m/ObjectIdentifier",
+    "sap/ui/core/Icon"
   ],
   /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -28,7 +30,9 @@ sap.ui.define(
     ODataModel,
     UIColumn,
     MColumn,
-    Text
+    Text,
+    ObjectIdentifier,
+    Icon
   ) {
     "use strict";
 
@@ -38,6 +42,8 @@ sap.ui.define(
         var oInputTechnicalObject = this.byId("technicalObject");
         this._oInputTechnicalObject = oInputTechnicalObject;
         this.oTehcObjVHModel = this.getOwnerComponent().getModel("techObjVH");
+        this._oInputobjectnumber = this.byId("objectnumber");
+        this._oInputobjectname = this.byId("objectname");
       },
 
       onChangeObjectType: function(oEvent) {
@@ -55,17 +61,23 @@ sap.ui.define(
 
       //Handle on Submit
       onSubmit: function() {
-        var technicalObject = this.byId("technicalObject").getTokens();
-        if (technicalObject.length > 0) {
-          const equipmentid = technicalObject[0].getKey();
-          const equipmentname = technicalObject[0].getText();
-          this.getRouter().navTo("Create", {
-            equipment: equipmentid,
-            equipmentname: equipmentname
-          });
-        } else {
-          this.byId("technicalObject").setValueState("Error");
-        }
+        // var technicalObject = this.byId("technicalObject").getTokens();
+        // if (technicalObject.length > 0) {
+        //   const equipmentid = technicalObject[0].getKey();
+        //   const equipmentname = technicalObject[0].getText();
+        //   this.getRouter().navTo("Create", {
+        //     equipment: equipmentid,
+        //     equipmentname: equipmentname
+        //   });
+        // } else {
+        //   this.byId("technicalObject").setValueState("Error");
+        // }
+        const objectnumber = this.byId("objectnumber").getValue();
+        const equipmentname = this.byId("objectname").getValue();
+        this.getRouter().navTo("Create", {
+          equipment: encodeURIComponent(objectnumber),
+          equipmentname: encodeURIComponent(equipmentname)
+        });
       },
 
       //Handle Value Help Technical Object
@@ -123,34 +135,21 @@ sap.ui.define(
 
                   oTable.addColumn(
                     new UIColumn({
-                      label: new Label({ text: "Technical Obj Type" }),
+                      label: new Label({ text: "Technical Object" }),
+                      template: new ObjectIdentifier({
+                        title: "{TechnicalObjectLabel}",
+                        text: "{TechnicalObjectDescription}"
+                      })
+                    })
+                  );
+
+                  oTable.addColumn(
+                    new UIColumn({
+                      label: new Label({ text: "Object Type" }),
                       template: new Text({
-                        wrapping: false,
+                        wrapping: true,
                         text: "{ZTechnicalObjectType}"
                       })
-                    })
-                  );
-
-                  oTable.addColumn(
-                    new UIColumn({
-                      label: new Label({ text: "Technical Object" }),
-                      template: new Text({
-                        wrapping: true,
-                        text: "{TechnicalObject}"
-                      })
-                    })
-                  );
-
-                  oTable.addColumn(
-                    new UIColumn({
-                      label: new Label({ text: "Description" }),
-                      template: new Text({
-                        wrapping: true,
-                        text: "{TechnicalObjectLabel}"
-                      }),
-                      demandPopin: "true",
-                      popinDisplay: "Inline",
-                      minScreenWidth: "Large"
                     })
                   );
                 }
@@ -162,12 +161,12 @@ sap.ui.define(
                     path: "/ZC_TECHOBJVH",
                     template: new ColumnListItem({
                       cells: [
-                        new Label({ text: "{ZTechnicalObjectType}" }),
-                        new Label({ text: "{TechnicalObject}" }),
-                        new Label({
-                          text: "{TechnicalObjectLabel}",
+                        new ObjectIdentifier({
+                          title: "{TechnicalObjectLabel}",
+                          text: "{TechnicalObjectDescription}",
                           wrapping: true
-                        })
+                        }),
+                        new Label({ text: "{ZTechnicalObjectType}" })
                       ]
                     }),
                     events: {
@@ -178,17 +177,12 @@ sap.ui.define(
                   });
                   oTable.addColumn(
                     new MColumn({
-                      header: new Label({ text: "Technical Obj Type" })
-                    })
-                  );
-                  oTable.addColumn(
-                    new MColumn({
                       header: new Label({ text: "Technical Object" })
                     })
                   );
                   oTable.addColumn(
                     new MColumn({
-                      header: new Label({ text: "Technical Object Label" }),
+                      header: new Label({ text: "Object Type" }),
                       demandPopin: true,
                       popinDisplay: "Inline",
                       minScreenWidth: "Large"
@@ -211,6 +205,27 @@ sap.ui.define(
         this._oInputTechnicalObject.setTokens(aTokens);
         this._oVHD.close();
         this.byId("technicalObject").setValueState("None");
+
+        //set Object Name
+        this._oInputobjectname.setValue(
+          this._oInputTechnicalObject
+            .getTokens()[0]
+            .mProperties.text.split("(")[0]
+            .trim()
+        );
+
+        //get All data selected
+        let selectedData = Object.values(
+          oEvent.getSource()._oSelectedItems.items
+        );
+        console.log(selectedData[0]);
+        //set object number
+        let selectedKey = selectedData[0].TechnicalObject;
+        this._oInputobjectnumber.setValue(selectedKey);
+
+        this.getOwnerComponent()
+          .getModel("PassModel")
+          .setProperty("/rentalObject", selectedData[0]);
       },
 
       //Handle when Filter in Value Help Dialog is search

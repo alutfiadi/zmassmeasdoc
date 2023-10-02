@@ -21,6 +21,8 @@
                                         <core:Item key="PM" text="Technical Object" />
                                         <core:Item key="RE" text="RE: Rental Unit"/>
                                     </ComboBox>
+                                    <Input id="objectnumber" width="100%" visible="false"/>
+                                    <Input id="objectname" width="100%" visible="false"/>
                                     <!-- <Input value="" id="refObjectType" class="sapUiSmallMarginBottom" required="true" type="Number" maxLength="3" showValueHelp="true" valueHelpRequest="handleMeasuringPointVH"/> -->
                                 </f:fields>
                             </f:FormElement>

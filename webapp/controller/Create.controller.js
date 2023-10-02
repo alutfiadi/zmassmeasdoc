@@ -30,8 +30,25 @@ sap.ui.define(
       onRouteMatched: function(oEvent) {
         const that = this;
         let oModelPoint = this.getModel("measuringpoint");
-        this.equipmentid = oEvent.getParameters().arguments.equipment;
-        this.equipmentname = oEvent.getParameters().arguments.equipmentname;
+        this.objectnumber = decodeURIComponent(
+          oEvent.getParameters().arguments.equipment
+        );
+
+        this.equipmentid = decodeURIComponent(
+          oEvent.getParameters().arguments.equipment
+        );
+        this.equipmentname = decodeURIComponent(
+          oEvent.getParameters().arguments.equipmentname
+        );
+
+        //PASSED DATA
+        // console.log("PASSED", this.getOwnerComponent().getModel("PassModel"));
+        var passedData = this.getOwnerComponent()
+          .getModel("PassModel")
+          .getProperty("/rentalObject");
+        if (typeof passedData == "undefined") {
+          this.getRouter().navTo("RouteHome");
+        }
         let aFilter = new Filter(
           "Equipment",
           sap.ui.model.FilterOperator.EQ,
@@ -46,7 +63,10 @@ sap.ui.define(
           undefined
         );
 
-        this.byId("EquipmentId").setValue(this.equipmentname);
+        this.byId("EquipmentId").setValue(
+          this.equipmentname + " (" + passedData.Equipment + ")"
+        );
+
         this.mPoints = [];
         oList.requestContexts(0, 100).then(function(aContexts) {
           if (aContexts.length == 0) {

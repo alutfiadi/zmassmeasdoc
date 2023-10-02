@@ -87,6 +87,9 @@
                     "bundleName": "zmassmeasdoc.i18n.i18n"
                 }
             },
+            "PassModel": {
+                "type": "sap.ui.model.json.JSONModel"
+            },
             "techObjVH": {
                 "preload": true,
                 "dataSource": "ZC_TECHOBJVH_CDS",
