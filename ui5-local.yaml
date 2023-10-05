@@ -36,6 +36,12 @@ server:
           - path: /sap
             url: http://smlhanaapp.sinarmasland.net:8000
             client: "800"
+          - path: /sap/opu/odata4/sap/api_measurementdocument/srvd_a2x/sap/measurementdocument/0001/
+            url: http://smlhanaapp.sinarmasland.net:8000
+            client: '800'
+          - path: /sap/opu/odata/sap/ZC_AL_MEASURINGPOINTS_CDS
+            url: http://smlhanaapp.sinarmasland.net:8000
+            client: '800'
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:

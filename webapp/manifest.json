@@ -42,6 +42,33 @@
                     "localUri": "localService/measuringpoint1/metadata.xml",
                     "odataVersion": "4.0"
                 }
+            },
+            "measurementdocument1": {
+                "uri": "/sap/opu/odata4/sap/api_measurementdocument/srvd_a2x/sap/measurementdocument/0001/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/measurementdocument1/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            },
+            "ZC_AL_MEASURINGPOINTS_CDS_Annotation": {
+                "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZC_AL_MEASURINGPOINTS_CDS_VAN',Version='0001')/$value/",
+                "type": "ODataAnnotation",
+                "settings": {
+                    "localUri": "localService/ZC_AL_MEASURINGPOINTS_CDS/ZC_AL_MEASURINGPOINTS_CDS_Annotation.xml"
+                }
+            },
+            "ZC_AL_MEASURINGPOINTS_CDS": {
+                "uri": "/sap/opu/odata/sap/ZC_AL_MEASURINGPOINTS_CDS",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "ZC_AL_MEASURINGPOINTS_CDS_Annotation"
+                    ],
+                    "localUri": "localService/ZC_AL_MEASURINGPOINTS_CDS/metadata.xml",
+                    "odataVersion": "2.0"
+                }
             }
         }
     },
@@ -103,12 +130,22 @@
                 }
             },
             "measuringpoint": {
-                "dataSource": "measuringpoint1",
+                "dataSource": "ZC_AL_MEASURINGPOINTS_CDS",
                 "preload": true,
                 "settings": {
                     "synchronizationMode": "None",
                     "operationMode": "Server",
                     "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "measurementdocument": {
+                "dataSource": "measurementdocument1",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": false,
                     "earlyRequests": true
                 }
             }

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="Validation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="HTML5"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../../sap/zc_al_measuringpoints_cds/$metadata">
+        <edmx:Include Namespace="ZC_AL_MEASURINGPOINTS_CDS" Alias="SAP"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="zc_al_measuringpoints_cds_van.v1" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_CostCenterStdVHType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="CostCenter"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ControllingArea"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Customer_VHType/CustomerAccountGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Customer_VHType/AuthorizationGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Customer_VHType/IsBusinessPurposeCompleted">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Customer_VHType/BusinessPartnerType">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Customer_VHType/IsCompetitor">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_EquipmentType/ID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_EquipmentType">
+                <Annotation Term="Communication.Contact">
+                    <Record>
+                        <PropertyValue Property="adr">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="type" EnumMember="Communication.ContactInformationType/preferred"/>
+                                    <PropertyValue Property="country" Path="ManufacturerCountry"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Communication.Address" Qualifier="pref">
+                    <Record>
+                        <PropertyValue Property="type" EnumMember="Communication.ContactInformationType/preferred"/>
+                        <PropertyValue Property="country" Path="ManufacturerCountry"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_SalesOrganizationType/AddressID">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Supplier_VHType/AuthorizationGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Supplier_VHType/SupplierAccountGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_Supplier_VHType/IsBusinessPurposeCompleted">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/EmailAddress">
+                <Annotation Term="Communication.IsEmailAddress"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/ContactCardRole">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/ContactCardType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/ContactCardNavLinkSemanticObj">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/ContactCardNavLinkQueryPart">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/PhoneNumber">
+                <Annotation Term="Communication.IsPhoneNumber"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/MobilePhoneNumber">
+                <Annotation Term="Communication.IsPhoneNumber"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType/FaxNumber">
+                <Annotation Term="Communication.IsPhoneNumber"/>
+            </Annotations>
+            <Annotations Target="ZC_AL_MEASURINGPOINTS_CDS.I_UserContactCardType">
+                <Annotation Term="Communication.Contact">
+                    <Record>
+                        <PropertyValue Property="fn" Path="FullName"/>
+                        <PropertyValue Property="org" Path="Department"/>
+                        <PropertyValue Property="role" Path="FunctionalTitleName"/>
+                        <PropertyValue Property="n">
+                            <Record>
+                                <PropertyValue Property="given" Path="FirstName"/>
+                                <PropertyValue Property="surname" Path="LastName"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="tel">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="type" EnumMember="Communication.PhoneType/fax"/>
+                                    <PropertyValue Property="uri" Path="FaxNumber"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="type" EnumMember="Communication.PhoneType/cell"/>
+                                    <PropertyValue Property="uri" Path="MobilePhoneNumber"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="type" EnumMember="Communication.PhoneType/work"/>
+                                    <PropertyValue Property="uri" Path="PhoneNumber"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="email">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="type" EnumMember="Communication.ContactInformationType/work"/>
+                                    <PropertyValue Property="address" Path="EmailAddress"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
