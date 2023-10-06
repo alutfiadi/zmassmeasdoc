@@ -69,6 +69,15 @@
                     "localUri": "localService/ZC_AL_MEASURINGPOINTS_CDS/metadata.xml",
                     "odataVersion": "2.0"
                 }
+            },
+            "ZOD_PM_CODE_TEXTS_SRV": {
+                "uri": "/sap/opu/odata/sap/ZOD_PM_CODE_TEXTS_SRV",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/ZOD_PM_CODE_TEXTS_SRV/metadata.xml",
+                    "odataVersion": "2.0"
+                }
             }
         }
     },
@@ -147,6 +156,18 @@
                     "operationMode": "Server",
                     "autoExpandSelect": false,
                     "earlyRequests": true
+                }
+            },
+            "codetext": {
+                "dataSource": "ZOD_PM_CODE_TEXTS_SRV",
+                "preload": true,
+                "settings": {
+                    "defaultBindingMode": "TwoWay",
+                    "defaultCountMode": "Inline",
+                    "refreshAfterChange": false,
+                    "metadataUrlParams": {
+                        "sap-value-list": "none"
+                    }
                 }
             }
         },

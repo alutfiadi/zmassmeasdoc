@@ -28,6 +28,9 @@ server:
           - path: /sap/opu/odata/sap/ZC_AL_MEASURINGPOINTS_CDS
             url: http://smlhanaapp.sinarmasland.net:8000
             client: '800'
+          - path: /sap/opu/odata/sap/ZOD_PM_CODE_TEXTS_SRV
+            url: http://smlhanaapp.sinarmasland.net:8000
+            client: '800'
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
