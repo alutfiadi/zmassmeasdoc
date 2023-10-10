@@ -8,7 +8,8 @@ sap.ui.define(
     "sap/m/Input",
     "sap/m/DateTimePicker",
     "sap/m/ComboBox",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/CustomData"
   ],
   function(
     Controller,
@@ -19,7 +20,8 @@ sap.ui.define(
     Input,
     DateTimePicker,
     ComboBox,
-    JSONModel
+    JSONModel,
+    CustomData
   ) {
     "use strict";
     var sEntityPath;
@@ -127,6 +129,11 @@ sap.ui.define(
         // });
       },
 
+      /**
+       * Function for create Panel for each measuring point.
+       * create array this.mPoint for stored id for each element
+       * @public
+       */
       createPanel: function(oItem) {
         console.log(oItem);
         let oPage = this.getView().byId("pageCreate");
@@ -140,22 +147,11 @@ sap.ui.define(
         let equipment = oItem.Equipment;
         let MeasuringPointTargetValue = Math.ceil(oItem.TargetConverted);
         // let MeasuringPoint = oItem.getProperty("MeasuringPoint");
-        // let MeasuringPointDescription = oItem.getProperty(
-        //   "MeasuringPointDescription"
-        // );
-        // let MeasurementRangeUnit = oItem.getProperty("MeasurementRangeUnit");
-        // let MeasuringPointIsCounter = oItem.getProperty(
-        //   "MeasuringPointIsCounter"
-        // );
-        // let ValuationCodeIsSufficient = oItem.getProperty(
-        //   "ValuationCodeIsSufficient"
-        // );
-
         let today = new Date();
         let read_by = sap.ushell.Container.getService("UserInfo").getId();
 
         // Define varibale for each component ID
-        let panelId = this.createId("panel" + MeasuringPoint);
+        let panelId = this.createId("panel." + MeasuringPoint);
         let ireadingId,
           idifferenceId,
           itargetId,
@@ -185,27 +181,59 @@ sap.ui.define(
         // Check for Measuring Point type
         if (MeasuringPointIsCounter && !ValuationCodeIsSufficient) {
           // console.log("Input REading and Difference");
-          ireadingId = this.createId("reading" + MeasuringPoint);
+          ireadingId = this.createId("reading." + MeasuringPoint);
+          idifferenceId = this.createId("difference." + MeasuringPoint);
+          iLastCounterId = that.createId("lastcounter." + MeasuringPoint);
+          iLastDateTimeId = that.createId("lastdatetime." + MeasuringPoint);
+
+          //Input Reading
           var oLabel2 = new Label({ text: "Reading" });
           var oInput2 = new Input(ireadingId, {
             description: MeasurementRangeUnit,
-            submit: [this.checkReading(ireadingId), this]
+            type: "Number",
+            customData: [
+              {
+                Type: "sap.ui.core.CustomData",
+                key: "iLastCounterId",
+                value: iLastCounterId // bind custom data
+              },
+              {
+                Type: "sap.ui.core.CustomData",
+                key: "idifferenceId",
+                value: idifferenceId // bind custom data
+              }
+            ],
+            change: [this.checkReading, this]
           });
           oInput2.addStyleClass("sapUiTinyMarginBottom");
-
           oPanel.addContent(oLabel2);
           oPanel.addContent(oInput2);
 
-          idifferenceId = this.createId("difference" + MeasuringPoint);
+          //Input Difference
           var oLabel3 = new Label({ text: "Difference" });
           var oInput3 = new Input(idifferenceId, {
-            description: MeasurementRangeUnit
+            description: MeasurementRangeUnit,
+            type: "Number",
+            customData: [
+              {
+                Type: "sap.ui.core.CustomData",
+                key: "iLastCounterId",
+                value: iLastCounterId // bind custom data
+              },
+              {
+                Type: "sap.ui.core.CustomData",
+                key: "ireadingId",
+                value: ireadingId // bind custom data
+              }
+            ],
+            // liveChange: [this.checkMinus, this],
+            change: [this.checkDifference, this]
           });
           oInput3.addStyleClass("sapUiTinyMarginBottom");
           oPanel.addContent(oLabel3);
           oPanel.addContent(oInput3);
 
-          iLastCounterId = that.createId("lastcounter" + MeasuringPoint);
+          //Input Last Counter Reading
           var oLabel7 = new Label({ text: "Last Counter" });
           var oInput7 = new Input(iLastCounterId, {
             description: MeasurementRangeUnit,
@@ -215,7 +243,7 @@ sap.ui.define(
           oPanel.addContent(oLabel7);
           oPanel.addContent(oInput7);
 
-          iLastDateTimeId = that.createId("lastdatetime" + MeasuringPoint);
+          //Input Last Date Time Reading
           var oInput8 = new DateTimePicker(iLastDateTimeId, {
             editable: false,
             visible: false
@@ -227,16 +255,25 @@ sap.ui.define(
           this.getLastMeasurementDoc(MeasuringPoint, oInput7, oInput8);
         } else if (!MeasuringPointIsCounter && !ValuationCodeIsSufficient) {
           // console.log("Input REading");
-          ireadingId = this.createId("reading" + MeasuringPoint);
+          ireadingId = this.createId("reading." + MeasuringPoint);
+          itargetId = this.createId("target." + MeasuringPoint);
           var oLabel2 = new Label({ text: "Reading" });
           var oInput2 = new Input(ireadingId, {
-            description: MeasurementRangeUnit
+            description: MeasurementRangeUnit,
+            customData: [
+              {
+                Type: "sap.ui.core.CustomData",
+                key: "itargetId",
+                value: itargetId // bind custom data
+              }
+            ],
+            change: [this.checkReading, this]
           });
           oInput2.addStyleClass("sapUiTinyMarginBottom");
           oPanel.addContent(oLabel2);
           oPanel.addContent(oInput2);
 
-          itargetId = this.createId("target" + MeasuringPoint);
+          //Input Target
           var oLabel3 = new Label({ text: "Target" });
           var oInput3 = new Input(itargetId, {
             value: MeasuringPointTargetValue,
@@ -248,7 +285,7 @@ sap.ui.define(
           oPanel.addContent(oInput3);
         } else if (!MeasuringPointIsCounter && ValuationCodeIsSufficient) {
           // console.log("Input Valuation");
-          ivalcodeId = this.createId("valcode" + MeasuringPoint);
+          ivalcodeId = this.createId("valcode." + MeasuringPoint);
           var oLabel9 = new Label({ text: "Valuation Code" });
           var oInput9 = new ComboBox(ivalcodeId, {
             width: "100%",
@@ -266,7 +303,8 @@ sap.ui.define(
           this.getCodeTexts(MeasuringPointCodeGroup, this.oModelText, oInput9);
         }
 
-        let idatetimeId = this.createId("datetime" + MeasuringPoint);
+        //Input Date Time Reading
+        let idatetimeId = this.createId("datetime." + MeasuringPoint);
         var oLabel4 = new Label({ text: "Date Time" });
         var oInput4 = new DateTimePicker(idatetimeId, {
           valueFormat: "yyyy-MM-dd HH:mm:ss",
@@ -275,14 +313,16 @@ sap.ui.define(
         oInput4.setDateValue(today);
         oInput4.addStyleClass("sapUiTinyMarginBottom");
 
-        let ireadbyId = this.createId("readby" + MeasuringPoint);
+        //Input Reading by
+        let ireadbyId = this.createId("readby." + MeasuringPoint);
         var oLabel5 = new Label({ text: "Read By" });
         var oInput5 = new Input(ireadbyId, {
           value: read_by
         });
         oInput5.addStyleClass("sapUiTinyMarginBottom");
 
-        let itextId = this.createId("text" + MeasuringPoint);
+        //Inpout Free Text
+        let itextId = this.createId("text." + MeasuringPoint);
         var oLabel6 = new Label({ text: "Text" });
         var oInput6 = new Input(itextId, {});
         oInput6.addStyleClass("sapUiTinyMarginBottom");
@@ -308,7 +348,9 @@ sap.ui.define(
           sLastCounterId: iLastCounterId,
           sdatetimeId: idatetimeId,
           sreadbyId: ireadbyId,
-          stextId: itextId
+          stextId: itextId,
+          svalcodeId: ivalcodeId,
+          sMeasurementRangeUnit: MeasurementRangeUnit
         });
 
         this.oMeasPoints = this.mPoints.reduce(function(result, item) {
@@ -316,9 +358,75 @@ sap.ui.define(
           return result;
         }, {});
       },
-      checkReading: function(ireadingId) {
-        console.log("CHECK READING " + ireadingId);
+      /**
+       * Event handler for Reading Input Validation.
+       * It will handle for measuring point with target and with reading counter
+       * Reading Input value state will have ERROR valuestate if lower than previous measuring document
+       * @public
+       */
+      checkReading: function(oEvent) {
+        let ireading = this.byId(oEvent.getParameter("id"));
+        let iLastCounter = this.byId(oEvent.getSource().data("iLastCounterId"));
+        let idifference = this.byId(oEvent.getSource().data("idifferenceId"));
+        let itargetId = this.byId(oEvent.getSource().data("itargetId"));
+
+        //Check if measuring type is with target or not
+        if (itargetId == null) {
+          // let lastCounter = iLastCounter.getValue();
+          let difference = idifference.setValue(
+            ireading.getValue() - iLastCounter.getValue()
+          );
+          if (difference.getValue() <= 0) {
+            ireading.setValueState("Error");
+            ireading.setValueStateText(
+              "Counter Reading is smaller than previous document."
+            );
+          } else {
+            ireading.setValueState("None");
+          }
+        } else {
+          let reading = parseFloat(ireading.getValue());
+          let target = parseFloat(itargetId.getValue());
+
+          if (reading < target) {
+            ireading.setValueState("Error");
+            ireading.setValueStateText(
+              "Counter Reading is smaller than Target."
+            );
+          } else {
+            ireading.setValueState("None");
+          }
+        }
       },
+
+      /**
+       * Event handler for Validate Input Difference.
+       * It will handle for measuring point reading counter difference
+       * @public
+       */
+      checkDifference: function(oEvent) {
+        let idifference = this.byId(oEvent.getParameter("id"));
+        let iLastCounter = this.byId(oEvent.getSource().data("iLastCounterId"));
+        let ireading = this.byId(oEvent.getSource().data("ireadingId"));
+        let valueDifference = idifference.getValue();
+        valueDifference = valueDifference.replace(/[^\d]/g, "");
+        idifference.setValue(valueDifference);
+        ireading.setValue(
+          parseInt(valueDifference) + parseInt(iLastCounter.getValue())
+        );
+
+        ireading.setValueState("None");
+      },
+
+      /**
+       * Async Function for getLast Measurement Document for each Measuring Point.
+       * It called in function createPanel()
+       * Using Odata V4
+       * @public
+       * @param {object} mPoint array element ID
+       * @param {object} oInput7 Input for Previous Counter
+       * @param {object} oInput8 Input for Previous Input Date
+       */
       getLastMeasurementDoc: async function(mpoint, oInput7, oInput8) {
         //GET LAST Value of Measurement Doc by Measurement Point
         let oModel = this.getOwnerComponent().getModel("measurementdocument");
@@ -351,6 +459,16 @@ sap.ui.define(
         // console.log(lastmeasdoc);
         return lastmeasdoc;
       },
+
+      /**
+       * Function for get Code Texts for each Valuation Code.
+       * It called in function createPanel()
+       * Using Odata V4
+       * @public
+       * @param {string} codeGroup code group in Valuation Code
+       * @param {model} oModelText Model codetext
+       * @param {object} oInput9 Combobox for code group texts
+       */
       getCodeTexts: function(codeGroup, oModelText, oInput9) {
         let oSelect = oInput9;
         let oJSONModel = new JSONModel();
@@ -368,7 +486,83 @@ sap.ui.define(
           }
         });
       },
-      onSave: function() {
+      onSave: async function() {
+        // console.log(this.oMeasPoints);
+        let oModelMeasDoc = this.getModel("measurementdocument");
+        let batchRequest = [];
+        let mParameters = { $$groupId: "batchCreate" };
+        let measdocumentList = oModelMeasDoc.bindList(
+          "/MeasurementDocument",
+          null, //oContext
+          null, //vSorters
+          null, //vFilters
+          mParameters
+        );
+
+        Object.entries(this.mPoints).forEach(([key, element]) => {
+          //create variable from value
+          let vMeasuringPoint = element.smeasuringpoint;
+          let idatetime = this.byId(element.sdatetimeId).getValue();
+          let ddate = idatetime.split(" ")[0];
+          let dtime = idatetime.split(" ")[1];
+          let vMsmtRdngByUser = this.byId(element.sreadbyId).getValue();
+          let vMeasurementDocumentText = this.byId(element.stextId).getValue();
+
+          // check measuring point type
+          if (element.svalcodeId == null) {
+            // measuring point without valuation code
+            let vMeasurementCounterReading = parseInt(
+              this.byId(element.sreadingId).getValue()
+            );
+            let vMeasurementReadingEntryUoM = element.sMeasurementRangeUnit;
+            var oMeasurementDoc = {
+              MeasuringPoint: vMeasuringPoint,
+              MsmtRdngDate: ddate,
+              MsmtRdngTime: dtime,
+              MsmtRdngByUser: vMsmtRdngByUser,
+              MeasurementDocumentText: vMeasurementDocumentText,
+              MeasurementCounterReading: vMeasurementCounterReading,
+              MeasurementReadingEntryUoM: vMeasurementReadingEntryUoM
+            };
+          } else if (element.svalcodeId != null) {
+            // measuring point with valuation code
+            let vMsmtValuationCode = this.byId(
+              element.svalcodeId
+            ).getSelectedKey();
+            var oMeasurementDoc = {
+              MeasuringPoint: vMeasuringPoint,
+              MsmtRdngDate: ddate,
+              MsmtRdngTime: dtime,
+              MsmtRdngByUser: vMsmtRdngByUser,
+              MeasurementDocumentText: vMeasurementDocumentText,
+              MsmtValuationCode: vMsmtValuationCode
+            };
+          }
+
+          var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
+          console.log(oMeasurementDoc);
+
+          // oDocCreate.created().then(
+          //   function() {
+          //     console.log("createa");
+          //     var newDoc = oDocCreate.getProperty("MeasurementDocument");
+          //     console.log(newDoc);
+          //   },
+          //   function(oError) {
+          //     console.log(oError);
+          //     // handle rejection of entity creation; if oError.canceled === true then the transient entity has been deleted
+          //   }
+          // );
+        });
+        var fnSuccess = function() {
+          console.log("SUCCESS");
+        }.bind(this);
+
+        var fnError = function(oError) {
+          console.log(oError.message);
+        }.bind(this);
+        oModelMeasDoc.submitBatch("batchCreate").then(fnSuccess, fnError);
+        oModelMeasDoc.createCompleted(this.check1, this);
         // let sinfotext = "";
         // this.mPoints.forEach(item => {
         //   sinfotext =
@@ -387,6 +581,9 @@ sap.ui.define(
         //   }
         // });
       },
+      check1: function(oEvent) {
+        console.log(oEvent);
+      },
       onCancel: function(oEvent) {
         let that = this;
         console.log(this.mPoints);
@@ -395,28 +592,6 @@ sap.ui.define(
         });
         this.getRouter().navTo("RouteHome");
       }
-      //   onEditCarrier: async function() {
-      //     var that = this,
-      //       oView = this.getView(),
-      //       oModel = this.getModel();
-      //     var fields = ["CarrierId", "Name", "CurrencyCode"];
-      //     var payload = this.getValues(this.oView, fields);
-      //     try {
-      //       var res = await this.onEdit(this.oModel, payload, this.sEntityPath);
-      //       oModel.refresh(true);
-      //       MessageBox.show("Edit Success", {
-      //         icon: MessageBox.Icon.SUCCESS,
-      //         title: "Success",
-      //         actions: [MessageBox.Action.OK],
-      //         onClose: function(oAction) {
-      //           that.onNaviBack();
-      //         }
-      //       });
-      //     } catch (e) {
-      //       var errmessage = JSON.parse(e.responseText);
-      //       MessageBox.error(errmessage.error.message.value);
-      //     }
-      //   }
     });
   }
 );
