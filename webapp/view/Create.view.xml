@@ -15,6 +15,7 @@
         </content>
         <footer>
             <OverflowToolbar id="otbFooter">
+                <Button icon="sap-icon://alert" type="Emphasized" press="openMsgList"/>
                 <ToolbarSpacer/>
                 <Button type="Accept" text="Save" press=".onSave">
                     <layoutData>

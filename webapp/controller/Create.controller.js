@@ -9,9 +9,11 @@ sap.ui.define(
     "sap/m/DateTimePicker",
     "sap/m/ComboBox",
     "sap/ui/model/json/JSONModel",
+    "sap/m/MessagePopover",
+    "sap/m/MessagePopoverItem",
     "sap/ui/core/CustomData"
   ],
-  function(
+  function (
     Controller,
     MessageBox,
     Filter,
@@ -21,78 +23,73 @@ sap.ui.define(
     DateTimePicker,
     ComboBox,
     JSONModel,
+    MessagePopover,
+    MessagePopoverItem,
     CustomData
   ) {
     "use strict";
     var sEntityPath;
     return Controller.extend("zmassmeasdoc.controller.Create", {
-      onInit: function() {
+      onInit: function () {
+        this._oMessageManager = sap.ui.getCore().getMessageManager();
+        this._oMessageModel = sap.ui.getCore().getMessageManager().getMessageModel();
         this.oRouter = this.getRouter();
-        this.oRouter
-          .getRoute("Create")
-          .attachPatternMatched(this.onRouteMatched, this);
+        this.oRouter.getRoute("Create").attachPatternMatched(this.onRouteMatched, this);
+        this.oMessagePopover = new MessagePopover({
+          items: {
+            path: "message>/",
+            template: new sap.m.MessagePopoverItem({
+              description: "{message>description}",
+              type: "{message>type}",
+              title: "{message>message}"
+            })
+          }
+        });
       },
 
-      onRouteMatched: function(oEvent) {
+      onRouteMatched: function (oEvent) {
         const that = this;
         let oModelPoint = this.getModel("measuringpoint");
         this.oModelText = this.getModel("codetext");
-        this.objectnumber = decodeURIComponent(
-          oEvent.getParameters().arguments.equipment
-        );
+        this.objectnumber = decodeURIComponent(oEvent.getParameters().arguments.equipment);
 
-        this.equipmentid = decodeURIComponent(
-          oEvent.getParameters().arguments.equipment
-        );
-        this.equipmentname = decodeURIComponent(
-          oEvent.getParameters().arguments.equipmentname
-        );
+        this.equipmentid = decodeURIComponent(oEvent.getParameters().arguments.equipment);
+        this.equipmentname = decodeURIComponent(oEvent.getParameters().arguments.equipmentname);
 
         //PASSED DATA
-        var passedData = this.getOwnerComponent()
-          .getModel("PassModel")
-          .getProperty("/rentalObject");
+        var passedData = this.getOwnerComponent().getModel("PassModel").getProperty("/rentalObject");
         if (typeof passedData == "undefined") {
           this.getRouter().navTo("RouteHome");
         }
-        this.byId("EquipmentId").setValue(
-          this.equipmentname + " (" + passedData.Equipment + ")"
-        );
+        this.byId("EquipmentId").setValue(this.equipmentname + " (" + passedData.Equipment + ")");
 
         //create filter by equipment id
-        let aFilter = new Filter(
-          "Equipment",
-          sap.ui.model.FilterOperator.EQ,
-          this.equipmentid
-        );
+        let aFilter = new Filter("Equipment", sap.ui.model.FilterOperator.EQ, this.equipmentid);
 
         this.mPoints = []; // Array for component ID
         oModelPoint.read("/ZC_AL_MEASURINGPOINTS", {
           filters: [aFilter],
-          success: function(oData, oResponse) {
+          success: function (oData, oResponse) {
             let results = oData.results;
             if (results.length == 0) {
               // console.log("NO DATA");
               // No Measuring Point
-              MessageBox.information(
-                "No Measuring Points for " + that.equipmentid,
-                {
-                  actions: [MessageBox.Action.OK],
-                  emphasizedAction: MessageBox.Action.OK,
-                  onClose: function(sAction) {
-                    that.getRouter().navTo("RouteHome");
-                  }
+              MessageBox.information("No Measuring Points for " + that.equipmentid, {
+                actions: [MessageBox.Action.OK],
+                emphasizedAction: MessageBox.Action.OK,
+                onClose: function (sAction) {
+                  that.getRouter().navTo("RouteHome");
                 }
-              );
+              });
             } else {
-              results.forEach(function(oContext) {
+              results.forEach(function (oContext) {
                 // As we have fetched the data already, we build panel from emasruing pints data
                 that.createPanel(oContext);
                 console.log(that.oMeasPoints);
               });
             }
           },
-          error: function(oError) {
+          error: function (oError) {
             console.log(oError);
           }
         });
@@ -134,7 +131,7 @@ sap.ui.define(
        * create array this.mPoint for stored id for each element
        * @public
        */
-      createPanel: function(oItem) {
+      createPanel: function (oItem) {
         console.log(oItem);
         let oPage = this.getView().byId("pageCreate");
         let that = this;
@@ -152,12 +149,7 @@ sap.ui.define(
 
         // Define varibale for each component ID
         let panelId = this.createId("panel." + MeasuringPoint);
-        let ireadingId,
-          idifferenceId,
-          itargetId,
-          iLastCounterId,
-          iLastDateTimeId,
-          ivalcodeId;
+        let ireadingId, idifferenceId, itargetId, iLastCounterId, iLastDateTimeId, ivalcodeId;
 
         // Create a panel for each item
 
@@ -353,7 +345,7 @@ sap.ui.define(
           sMeasurementRangeUnit: MeasurementRangeUnit
         });
 
-        this.oMeasPoints = this.mPoints.reduce(function(result, item) {
+        this.oMeasPoints = this.mPoints.reduce(function (result, item) {
           result[item.smeasuringpoint] = item;
           return result;
         }, {});
@@ -364,7 +356,7 @@ sap.ui.define(
        * Reading Input value state will have ERROR valuestate if lower than previous measuring document
        * @public
        */
-      checkReading: function(oEvent) {
+      checkReading: function (oEvent) {
         let ireading = this.byId(oEvent.getParameter("id"));
         let iLastCounter = this.byId(oEvent.getSource().data("iLastCounterId"));
         let idifference = this.byId(oEvent.getSource().data("idifferenceId"));
@@ -373,14 +365,10 @@ sap.ui.define(
         //Check if measuring type is with target or not
         if (itargetId == null) {
           // let lastCounter = iLastCounter.getValue();
-          let difference = idifference.setValue(
-            ireading.getValue() - iLastCounter.getValue()
-          );
+          let difference = idifference.setValue(ireading.getValue() - iLastCounter.getValue());
           if (difference.getValue() <= 0) {
             ireading.setValueState("Error");
-            ireading.setValueStateText(
-              "Counter Reading is smaller than previous document."
-            );
+            ireading.setValueStateText("Counter Reading is smaller than previous document.");
           } else {
             ireading.setValueState("None");
           }
@@ -390,9 +378,7 @@ sap.ui.define(
 
           if (reading < target) {
             ireading.setValueState("Error");
-            ireading.setValueStateText(
-              "Counter Reading is smaller than Target."
-            );
+            ireading.setValueStateText("Counter Reading is smaller than Target.");
           } else {
             ireading.setValueState("None");
           }
@@ -404,16 +390,14 @@ sap.ui.define(
        * It will handle for measuring point reading counter difference
        * @public
        */
-      checkDifference: function(oEvent) {
+      checkDifference: function (oEvent) {
         let idifference = this.byId(oEvent.getParameter("id"));
         let iLastCounter = this.byId(oEvent.getSource().data("iLastCounterId"));
         let ireading = this.byId(oEvent.getSource().data("ireadingId"));
         let valueDifference = idifference.getValue();
         valueDifference = valueDifference.replace(/[^\d]/g, "");
         idifference.setValue(valueDifference);
-        ireading.setValue(
-          parseInt(valueDifference) + parseInt(iLastCounter.getValue())
-        );
+        ireading.setValue(parseInt(valueDifference) + parseInt(iLastCounter.getValue()));
 
         ireading.setValueState("None");
       },
@@ -427,7 +411,7 @@ sap.ui.define(
        * @param {object} oInput7 Input for Previous Counter
        * @param {object} oInput8 Input for Previous Input Date
        */
-      getLastMeasurementDoc: async function(mpoint, oInput7, oInput8) {
+      getLastMeasurementDoc: async function (mpoint, oInput7, oInput8) {
         //GET LAST Value of Measurement Doc by Measurement Point
         let oModel = this.getOwnerComponent().getModel("measurementdocument");
         let oDoc = oModel.bindList("/MeasurementDocument");
@@ -437,19 +421,13 @@ sap.ui.define(
           $select:
             "MeasurementDocument,MeasuringPoint,MeasurementReading,MeasurementCounterReading,MsmtCounterReadingDifference,MeasurementReadingInEntryUoM,MsmtDocumentSIUnitOfMeasure,MsmtRdngDate,MsmtRdngTime",
           $filter: sFilter,
-          $orderby:
-            "MeasuringPoint,MeasurementDocument desc,MsmtRdngDate desc,MsmtRdngTime desc"
+          $orderby: "MeasuringPoint,MeasurementDocument desc,MsmtRdngDate desc,MsmtRdngTime desc"
         });
-        oDoc.requestContexts(0, 1).then(function(aContexts) {
-          aContexts.forEach(function(oContext) {
+        oDoc.requestContexts(0, 1).then(function (aContexts) {
+          aContexts.forEach(function (oContext) {
             // As we have fetched the data already, we can access "Note" through getProperty
-            lastmeasdoc["TotalDiff"] = oContext.getProperty(
-              "MeasurementReadingInEntryUoM"
-            );
-            lastmeasdoc["lastdatetime"] =
-              oContext.getProperty("MsmtRdngDate") +
-              " " +
-              oContext.getProperty("MsmtRdngTime");
+            lastmeasdoc["TotalDiff"] = oContext.getProperty("MeasurementReadingInEntryUoM");
+            lastmeasdoc["lastdatetime"] = oContext.getProperty("MsmtRdngDate") + " " + oContext.getProperty("MsmtRdngTime");
             lastmeasdoc["lastdatetime"] = new Date(lastmeasdoc["lastdatetime"]);
             oInput7.setValue(lastmeasdoc["TotalDiff"]);
             oInput8.setDateValue(lastmeasdoc["lastdatetime"]);
@@ -469,25 +447,27 @@ sap.ui.define(
        * @param {model} oModelText Model codetext
        * @param {object} oInput9 Combobox for code group texts
        */
-      getCodeTexts: function(codeGroup, oModelText, oInput9) {
+      getCodeTexts: function (codeGroup, oModelText, oInput9) {
         let oSelect = oInput9;
         let oJSONModel = new JSONModel();
         // console.log(oModelText);
         let oFilter = new Filter("Codegruppe", "EQ", codeGroup);
         oModelText.read("/CodeTextsSet", {
           filters: [oFilter],
-          success: function(response) {
+          success: function (response) {
             console.log(response.results);
             oJSONModel.setData(response.results);
             oSelect.setModel(oJSONModel, "CodeTexts");
           }.bind(this),
-          error: function(error) {
+          error: function (error) {
             console.log(error);
           }
         });
       },
-      onSave: async function() {
+      onSave: async function (oEvent) {
         // console.log(this.oMeasPoints);
+        this._oMessageManager.removeAllMessages();
+        let that = this;
         let oModelMeasDoc = this.getModel("measurementdocument");
         let batchRequest = [];
         let mParameters = { $$groupId: "batchCreate" };
@@ -511,9 +491,7 @@ sap.ui.define(
           // check measuring point type
           if (element.svalcodeId == null) {
             // measuring point without valuation code
-            let vMeasurementCounterReading = parseInt(
-              this.byId(element.sreadingId).getValue()
-            );
+            let vMeasurementCounterReading = parseInt(this.byId(element.sreadingId).getValue());
             let vMeasurementReadingEntryUoM = element.sMeasurementRangeUnit;
             var oMeasurementDoc = {
               MeasuringPoint: vMeasuringPoint,
@@ -526,9 +504,7 @@ sap.ui.define(
             };
           } else if (element.svalcodeId != null) {
             // measuring point with valuation code
-            let vMsmtValuationCode = this.byId(
-              element.svalcodeId
-            ).getSelectedKey();
+            let vMsmtValuationCode = this.byId(element.svalcodeId).getSelectedKey();
             var oMeasurementDoc = {
               MeasuringPoint: vMeasuringPoint,
               MsmtRdngDate: ddate,
@@ -540,29 +516,66 @@ sap.ui.define(
           }
 
           var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
-          console.log(oMeasurementDoc);
-
-          // oDocCreate.created().then(
-          //   function() {
-          //     console.log("createa");
-          //     var newDoc = oDocCreate.getProperty("MeasurementDocument");
-          //     console.log(newDoc);
-          //   },
-          //   function(oError) {
-          //     console.log(oError);
-          //     // handle rejection of entity creation; if oError.canceled === true then the transient entity has been deleted
-          //   }
-          // );
+          // console.log(oMeasurementDoc);
         });
-        var fnSuccess = function() {
-          console.log("SUCCESS");
-        }.bind(this);
 
-        var fnError = function(oError) {
-          console.log(oError.message);
-        }.bind(this);
-        oModelMeasDoc.submitBatch("batchCreate").then(fnSuccess, fnError);
-        oModelMeasDoc.createCompleted(this.check1, this);
+        // TODO this should be the default for submitBatch
+        // oModelMeasDoc.submitBatch("batchCreate").then(
+        //   function () {
+        //     // TODO the success handler could get all errors of failed parts
+        //     if (!measdocumentList.hasPendingChanges()) {
+        //       // raise success message
+        //       console.log("success");
+        //     } else {
+        //       // Check error message from batch request.
+        //       var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+        //       that.oMessagePopover.setModel(oModelMessage, "message");
+        //     }
+        //   },
+        //   function (oError) {
+        //     MessageBox.alert(oError.message, {
+        //       icon: MessageBox.Icon.ERROR,
+        //       title: "Unexpected Error"
+        //     });
+        //   }
+        // );
+        oModelMeasDoc
+          .submitBatch("batchCreate")
+          .then(function () {
+            // console.log(measdocumentList.hasPendingChanges());
+            var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+            that.oMessagePopover.setModel(oModelMessage, "message");
+          })
+          .catch(function (oError) {
+            MessageBox.alert(oError.message, {
+              icon: MessageBox.Icon.ERROR,
+              title: "Unexpected Error"
+            });
+          })
+          .finally(function () {
+            // console.log(measdocumentList.hasPendingChanges());
+            // var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+            // console.log(oModelMessage);
+          });
+
+        // try {
+        //   await oModelMeasDoc.submitBatch("batchCreate");
+        //   if (!measdocumentList.hasPendingChanges()) {
+        //     console.log("sucess");
+        //   } else {
+        //     console.log("hasPendingChanges() true");
+        //     // batch request is still running, cant reset changes
+        //   }
+        //   console.log("done");
+        // } catch (error) {
+        //   console.log("error while creating");
+        //   console.log(error);
+        // } finally {
+        //   var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+        //   console.log(oModelMessage);
+        // }
+        // oModelMeasDoc.createCompleted(this.check1, this);
+
         // let sinfotext = "";
         // this.mPoints.forEach(item => {
         //   sinfotext =
@@ -581,13 +594,13 @@ sap.ui.define(
         //   }
         // });
       },
-      check1: function(oEvent) {
-        console.log(oEvent);
+      openMsgList: function (oEvent) {
+        this.oMessagePopover.openBy(oEvent.getSource());
       },
-      onCancel: function(oEvent) {
+      onCancel: function (oEvent) {
         let that = this;
         console.log(this.mPoints);
-        this.mPoints.forEach(item => {
+        this.mPoints.forEach((item) => {
           that.byId(item.spanelId).destroy();
         });
         this.getRouter().navTo("RouteHome");

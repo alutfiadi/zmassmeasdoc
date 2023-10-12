@@ -155,7 +155,10 @@
                     "synchronizationMode": "None",
                     "operationMode": "Server",
                     "autoExpandSelect": false,
-                    "earlyRequests": true
+                    "earlyRequests": true,
+                    "groupProperties" : {
+						"batchCreate" : {"submit" : "API"}
+					}
                 }
             },
             "codetext": {
