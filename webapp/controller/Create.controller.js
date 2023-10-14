@@ -33,8 +33,6 @@ sap.ui.define(
       onInit: function () {
         this._oMessageManager = sap.ui.getCore().getMessageManager();
         this._oMessageModel = sap.ui.getCore().getMessageManager().getMessageModel();
-        this.oRouter = this.getRouter();
-        this.oRouter.getRoute("Create").attachPatternMatched(this.onRouteMatched, this);
         this.oMessagePopover = new MessagePopover({
           items: {
             path: "message>/",
@@ -45,10 +43,15 @@ sap.ui.define(
             })
           }
         });
+        this.oView.setModel(this._oMessageModel, "message");
+
+        this.oRouter = this.getRouter();
+        this.oRouter.getRoute("Create").attachPatternMatched(this.onRouteMatched, this);
       },
 
       onRouteMatched: function (oEvent) {
         const that = this;
+        this._oMessageManager.removeAllMessages();
         let oModelPoint = this.getModel("measuringpoint");
         this.oModelText = this.getModel("codetext");
         this.objectnumber = decodeURIComponent(oEvent.getParameters().arguments.equipment);
@@ -467,6 +470,7 @@ sap.ui.define(
       onSave: async function (oEvent) {
         // console.log(this.oMeasPoints);
         this._oMessageManager.removeAllMessages();
+        this.newDoc = [];
         let that = this;
         let oModelMeasDoc = this.getModel("measurementdocument");
         let batchRequest = [];
@@ -478,6 +482,9 @@ sap.ui.define(
           null, //vFilters
           mParameters
         );
+
+        // get Button message
+        var oButton = this.getView().byId("btnPopOver");
 
         Object.entries(this.mPoints).forEach(([key, element]) => {
           //create variable from value
@@ -493,36 +500,74 @@ sap.ui.define(
             // measuring point without valuation code
             let vMeasurementCounterReading = parseInt(this.byId(element.sreadingId).getValue());
             let vMeasurementReadingEntryUoM = element.sMeasurementRangeUnit;
-            var oMeasurementDoc = {
-              MeasuringPoint: vMeasuringPoint,
-              MsmtRdngDate: ddate,
-              MsmtRdngTime: dtime,
-              MsmtRdngByUser: vMsmtRdngByUser,
-              MeasurementDocumentText: vMeasurementDocumentText,
-              MeasurementCounterReading: vMeasurementCounterReading,
-              MeasurementReadingEntryUoM: vMeasurementReadingEntryUoM
-            };
+            if (vMeasurementCounterReading) {
+              var oMeasurementDoc = {
+                MeasuringPoint: vMeasuringPoint,
+                MsmtRdngDate: ddate,
+                MsmtRdngTime: dtime,
+                MsmtRdngByUser: vMsmtRdngByUser,
+                MeasurementDocumentText: vMeasurementDocumentText,
+                MeasurementCounterReading: vMeasurementCounterReading,
+                MeasurementReadingEntryUoM: vMeasurementReadingEntryUoM
+              };
+              var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
+              oDocCreate.created().then(function () {
+                // that.newDoc[vMeasuringPoint] = oDocCreate.getProperty("MeasurementDocument");
+                successResult[vMeasuringPoint].measurementDocument = oDocCreate.getProperty("MeasurementDocument");
+                console.log(successResult);
+              });
+            } else {
+              console.log(vMeasuringPoint + " Tidak Diisi");
+            }
           } else if (element.svalcodeId != null) {
             // measuring point with valuation code
             let vMsmtValuationCode = this.byId(element.svalcodeId).getSelectedKey();
-            var oMeasurementDoc = {
-              MeasuringPoint: vMeasuringPoint,
-              MsmtRdngDate: ddate,
-              MsmtRdngTime: dtime,
-              MsmtRdngByUser: vMsmtRdngByUser,
-              MeasurementDocumentText: vMeasurementDocumentText,
-              MsmtValuationCode: vMsmtValuationCode
-            };
+            if (vMsmtValuationCode != "") {
+              var oMeasurementDoc = {
+                MeasuringPoint: vMeasuringPoint,
+                MsmtRdngDate: ddate,
+                MsmtRdngTime: dtime,
+                MsmtRdngByUser: vMsmtRdngByUser,
+                MeasurementDocumentText: vMeasurementDocumentText,
+                MsmtValuationCode: vMsmtValuationCode
+              };
+              var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
+              oDocCreate.created().then(function () {
+                // that.newDoc[vMeasuringPoint] = oDocCreate.getProperty("MeasurementDocument");
+                successResult[vMeasuringPoint].measurementDocument = oDocCreate.getProperty("MeasurementDocument");
+                console.log(successResult);
+              });
+            } else {
+              console.log(vMeasuringPoint + " Tidak Diisi");
+            }
           }
 
-          var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
           // console.log(oMeasurementDoc);
         });
+        oModelMeasDoc.submitBatch("batchCreate");
+        let successResult = [];
+        let errorResult = [];
+        measdocumentList.attachCreateCompleted((oEvent) => {
+          let { context, success } = oEvent.getParameters();
+          let oObject = context.getObject();
+          if (!success) {
+            var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+            that.oMessagePopover.setModel(oModelMessage, "message");
+            errorResult.push({ success: success, object: oObject });
+          } else {
+            successResult[oObject.MeasuringPoint] = { success: success, object: oObject };
+            console.log(successResult);
+            successResult.forEach((item) => {
+              // sinfotext = sinfotext + "Measurement Document for Measuring Point " + item.smeasuringpoint + " successfully created." + "\n";
+              console.log(item);
+            });
+          }
+        }, this);
 
-        // TODO this should be the default for submitBatch
-        // oModelMeasDoc.submitBatch("batchCreate").then(
-        //   function () {
-        //     // TODO the success handler could get all errors of failed parts
+        // oModelMeasDoc
+        //   .submitBatch("batchCreate")
+        //   .then(function () {
+        //     console.log("start " + measdocumentList.isTransient());
         //     if (!measdocumentList.hasPendingChanges()) {
         //       // raise success message
         //       console.log("success");
@@ -530,51 +575,20 @@ sap.ui.define(
         //       // Check error message from batch request.
         //       var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
         //       that.oMessagePopover.setModel(oModelMessage, "message");
+        //       // that.oMessagePopover.openBy(oButton);
         //     }
-        //   },
-        //   function (oError) {
+        //   })
+        //   .catch(function (oError) {
         //     MessageBox.alert(oError.message, {
         //       icon: MessageBox.Icon.ERROR,
         //       title: "Unexpected Error"
         //     });
-        //   }
-        // );
-        oModelMeasDoc
-          .submitBatch("batchCreate")
-          .then(function () {
-            // console.log(measdocumentList.hasPendingChanges());
-            var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-            that.oMessagePopover.setModel(oModelMessage, "message");
-          })
-          .catch(function (oError) {
-            MessageBox.alert(oError.message, {
-              icon: MessageBox.Icon.ERROR,
-              title: "Unexpected Error"
-            });
-          })
-          .finally(function () {
-            // console.log(measdocumentList.hasPendingChanges());
-            // var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-            // console.log(oModelMessage);
-          });
-
-        // try {
-        //   await oModelMeasDoc.submitBatch("batchCreate");
-        //   if (!measdocumentList.hasPendingChanges()) {
-        //     console.log("sucess");
-        //   } else {
-        //     console.log("hasPendingChanges() true");
-        //     // batch request is still running, cant reset changes
-        //   }
-        //   console.log("done");
-        // } catch (error) {
-        //   console.log("error while creating");
-        //   console.log(error);
-        // } finally {
-        //   var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-        //   console.log(oModelMessage);
-        // }
-        // oModelMeasDoc.createCompleted(this.check1, this);
+        //   })
+        //   .finally(function () {
+        //     // console.log(measdocumentList.hasPendingChanges());
+        //     // var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+        //     // console.log(oModelMessage);
+        //   });
 
         // let sinfotext = "";
         // this.mPoints.forEach(item => {
@@ -594,6 +608,11 @@ sap.ui.define(
         //   }
         // });
       },
+      onTest: function (oEvent) {
+        console.log(this._oMessageModel);
+        console.log(this._oMessageModel.getData());
+      },
+
       openMsgList: function (oEvent) {
         this.oMessagePopover.openBy(oEvent.getSource());
       },
