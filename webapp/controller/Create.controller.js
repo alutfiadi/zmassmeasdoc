@@ -97,36 +97,7 @@ sap.ui.define(
           }
         });
 
-        // Code for Odata V4
-        // let oList = oModelPoint.bindList(
-        //   "/ZC_AL_MEASURINGPOINTS",
-        //   undefined,
-        //   undefined,
-        //   aFilter,
-        //   undefined
-        // );
 
-        // oList.requestContexts(0, 100).then(function(aContexts) {
-        //   if (aContexts.length == 0) {
-        //     // console.log("NO DATA");
-        //     // No Measuring Point
-        //     MessageBox.information(
-        //       "No Measuring Points for " + that.equipmentid,
-        //       {
-        //         actions: [MessageBox.Action.OK],
-        //         emphasizedAction: MessageBox.Action.OK,
-        //         onClose: function(sAction) {
-        //           that.getRouter().navTo("RouteHome");
-        //         }
-        //       }
-        //     );
-        //   } else {
-        //     aContexts.forEach(function(oContext) {
-        //       // As we have fetched the data already, we build panel from emasruing pints data
-        //       that.createPanel(oContext);
-        //     });
-        //   }
-        // });
       },
 
       /**
@@ -470,10 +441,8 @@ sap.ui.define(
       onSave: async function (oEvent) {
         // console.log(this.oMeasPoints);
         this._oMessageManager.removeAllMessages();
-        this.newDoc = [];
         let that = this;
         let oModelMeasDoc = this.getModel("measurementdocument");
-        let batchRequest = [];
         let mParameters = { $$groupId: "batchCreate" };
         let measdocumentList = oModelMeasDoc.bindList(
           "/MeasurementDocument",
@@ -482,13 +451,12 @@ sap.ui.define(
           null, //vFilters
           mParameters
         );
-
-        // get Button message
-        var oButton = this.getView().byId("btnPopOver");
+        let sinfotext = ""
 
         Object.entries(this.mPoints).forEach(([key, element]) => {
           //create variable from value
           let vMeasuringPoint = element.smeasuringpoint;
+          that.vMeasuringPoint = element.smeasuringpoint;
           let idatetime = this.byId(element.sdatetimeId).getValue();
           let ddate = idatetime.split(" ")[0];
           let dtime = idatetime.split(" ")[1];
@@ -514,8 +482,10 @@ sap.ui.define(
               oDocCreate.created().then(function () {
                 // that.newDoc[vMeasuringPoint] = oDocCreate.getProperty("MeasurementDocument");
                 successResult[vMeasuringPoint].measurementDocument = oDocCreate.getProperty("MeasurementDocument");
-                console.log(successResult);
+                sinfotext = sinfotext + "Measurement Document "+ oDocCreate.getProperty("MeasurementDocument") +" is Created for Measuring Point " + vMeasuringPoint + "\n";
+                console.log(sinfotext);
               });
+
             } else {
               console.log(vMeasuringPoint + " Tidak Diisi");
             }
@@ -535,13 +505,14 @@ sap.ui.define(
               oDocCreate.created().then(function () {
                 // that.newDoc[vMeasuringPoint] = oDocCreate.getProperty("MeasurementDocument");
                 successResult[vMeasuringPoint].measurementDocument = oDocCreate.getProperty("MeasurementDocument");
-                console.log(successResult);
+                sinfotext = sinfotext + "Measurement Document "+ oDocCreate.getProperty("MeasurementDocument") +" is Created for Measuring Point " + vMeasuringPoint + "\n";
+                console.log(sinfotext);
               });
+
             } else {
               console.log(vMeasuringPoint + " Tidak Diisi");
             }
           }
-
           // console.log(oMeasurementDoc);
         });
         oModelMeasDoc.submitBatch("batchCreate");
@@ -556,63 +527,10 @@ sap.ui.define(
             errorResult.push({ success: success, object: oObject });
           } else {
             successResult[oObject.MeasuringPoint] = { success: success, object: oObject };
-            console.log(successResult);
-            successResult.forEach((item) => {
-              // sinfotext = sinfotext + "Measurement Document for Measuring Point " + item.smeasuringpoint + " successfully created." + "\n";
-              console.log(item);
-            });
           }
         }, this);
 
-        // oModelMeasDoc
-        //   .submitBatch("batchCreate")
-        //   .then(function () {
-        //     console.log("start " + measdocumentList.isTransient());
-        //     if (!measdocumentList.hasPendingChanges()) {
-        //       // raise success message
-        //       console.log("success");
-        //     } else {
-        //       // Check error message from batch request.
-        //       var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-        //       that.oMessagePopover.setModel(oModelMessage, "message");
-        //       // that.oMessagePopover.openBy(oButton);
-        //     }
-        //   })
-        //   .catch(function (oError) {
-        //     MessageBox.alert(oError.message, {
-        //       icon: MessageBox.Icon.ERROR,
-        //       title: "Unexpected Error"
-        //     });
-        //   })
-        //   .finally(function () {
-        //     // console.log(measdocumentList.hasPendingChanges());
-        //     // var oModelMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-        //     // console.log(oModelMessage);
-        //   });
-
-        // let sinfotext = "";
-        // this.mPoints.forEach(item => {
-        //   sinfotext =
-        //     sinfotext +
-        //     "Measurement Document for Measuring Point " +
-        //     item.smeasuringpoint +
-        //     " successfully created." +
-        //     "\n";
-        // });
-        // console.log(sinfotext);
-        // MessageBox.success(sinfotext, {
-        //   actions: [MessageBox.Action.OK],
-        //   emphasizedAction: MessageBox.Action.OK,
-        //   onClose: function(sAction) {
-        //     window.history.go(-1);
-        //   }
-        // });
       },
-      onTest: function (oEvent) {
-        console.log(this._oMessageModel);
-        console.log(this._oMessageModel.getData());
-      },
-
       openMsgList: function (oEvent) {
         this.oMessagePopover.openBy(oEvent.getSource());
       },

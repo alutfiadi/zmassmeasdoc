@@ -157,7 +157,7 @@
                     "autoExpandSelect": false,
                     "earlyRequests": true,
                     "groupProperties" : {
-						"batchCreate" : {"submit" : "API"}
+						"batchCreate" : {"submit" : "Auto"}
 					}
                 }
             },
