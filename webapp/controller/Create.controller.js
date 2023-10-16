@@ -486,12 +486,13 @@ sap.ui.define(
 
                 // chek if the success request count is equal to success reuslt array
                 if (requestCounter == Object.keys(successResult).length) {
-                  MessageBox.information(sinfotext, {
+                  MessageBox.success(sinfotext, {
                     actions: [MessageBox.Action.OK],
                     emphasizedAction: MessageBox.Action.OK,
                     onClose: function (sAction) {
                       // that.resetFields();
-                      window.history.go(-1);
+                      // window.history.go(-1);
+                      that.onCancel();
                     }
                   });
                 }
@@ -525,12 +526,13 @@ sap.ui.define(
                   "\n";
                 // chek if the success request count is equal to success reuslt array
                 if (requestCounter == Object.keys(successResult).length) {
-                  MessageBox.information(sinfotext, {
+                  MessageBox.success(sinfotext, {
                     actions: [MessageBox.Action.OK],
                     emphasizedAction: MessageBox.Action.OK,
                     onClose: function (sAction) {
                       // that.resetFields();
-                      window.history.go(-1);
+                      // window.history.go(-1);
+                      that.onCancel();
                     }
                   });
                 }
