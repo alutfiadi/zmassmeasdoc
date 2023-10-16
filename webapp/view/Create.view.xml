@@ -15,7 +15,7 @@
         </content>
         <footer>
             <OverflowToolbar id="otbFooter">
-                <Button id="btnPopOver" icon="sap-icon://error" visible="{=!!${message>/}.length}" type="Negative" text="Error" press="openMsgList" ariaHasPopup="Dialog"/>
+                <Button id="btnPopOver" icon="sap-icon://error" visible="{=!!${message>/}.length}" type="Negative" text="Error" press="openMsgList" />
                 <ToolbarSpacer/>
                 <Button type="Accept" text="Save" press=".onSave">
                     <layoutData>
@@ -23,11 +23,6 @@
                     </layoutData>
                 </Button>
                 <Button type="Reject" text="Cancel" press=".onCancel">
-                    <layoutData>
-                        <OverflowToolbarLayoutData priority="NeverOverflow" />
-                    </layoutData>
-                </Button>
-                <Button type="Reject" text="Console" press=".onTest">
                     <layoutData>
                         <OverflowToolbarLayoutData priority="NeverOverflow" />
                     </layoutData>

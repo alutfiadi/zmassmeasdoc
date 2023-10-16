@@ -75,7 +75,6 @@ sap.ui.define(
           success: function (oData, oResponse) {
             let results = oData.results;
             if (results.length == 0) {
-              // console.log("NO DATA");
               // No Measuring Point
               MessageBox.information("No Measuring Points for " + that.equipmentid, {
                 actions: [MessageBox.Action.OK],
@@ -88,7 +87,6 @@ sap.ui.define(
               results.forEach(function (oContext) {
                 // As we have fetched the data already, we build panel from emasruing pints data
                 that.createPanel(oContext);
-                console.log(that.oMeasPoints);
               });
             }
           },
@@ -96,8 +94,6 @@ sap.ui.define(
             console.log(oError);
           }
         });
-
-
       },
 
       /**
@@ -106,7 +102,6 @@ sap.ui.define(
        * @public
        */
       createPanel: function (oItem) {
-        console.log(oItem);
         let oPage = this.getView().byId("pageCreate");
         let that = this;
         let MeasuringPoint = oItem.MeasuringPoint;
@@ -126,7 +121,6 @@ sap.ui.define(
         let ireadingId, idifferenceId, itargetId, iLastCounterId, iLastDateTimeId, ivalcodeId;
 
         // Create a panel for each item
-
         var oPanel = new Panel(panelId, {
           headerText: MeasuringPoint + " - " + MeasuringPointDescription,
           expandable: true,
@@ -220,7 +214,6 @@ sap.ui.define(
           // get last value for each measuring point
           this.getLastMeasurementDoc(MeasuringPoint, oInput7, oInput8);
         } else if (!MeasuringPointIsCounter && !ValuationCodeIsSufficient) {
-          // console.log("Input REading");
           ireadingId = this.createId("reading." + MeasuringPoint);
           itargetId = this.createId("target." + MeasuringPoint);
           var oLabel2 = new Label({ text: "Reading" });
@@ -250,7 +243,6 @@ sap.ui.define(
           oPanel.addContent(oLabel3);
           oPanel.addContent(oInput3);
         } else if (!MeasuringPointIsCounter && ValuationCodeIsSufficient) {
-          // console.log("Input Valuation");
           ivalcodeId = this.createId("valcode." + MeasuringPoint);
           var oLabel9 = new Label({ text: "Valuation Code" });
           var oInput9 = new ComboBox(ivalcodeId, {
@@ -340,11 +332,16 @@ sap.ui.define(
         if (itargetId == null) {
           // let lastCounter = iLastCounter.getValue();
           let difference = idifference.setValue(ireading.getValue() - iLastCounter.getValue());
-          if (difference.getValue() <= 0) {
+          if (difference.getValue() < 0) {
             ireading.setValueState("Error");
             ireading.setValueStateText("Counter Reading is smaller than previous document.");
           } else {
             ireading.setValueState("None");
+          }
+
+          if (ireading.getValue() === "" || ireading.getValue() == null || ireading.getValue() == undefined) {
+            ireading.setValueState("None");
+            idifference.setValue("");
           }
         } else {
           let reading = parseFloat(ireading.getValue());
@@ -407,8 +404,6 @@ sap.ui.define(
             oInput8.setDateValue(lastmeasdoc["lastdatetime"]);
           });
         });
-        // console.log("lastmeasdoc");
-        // console.log(lastmeasdoc);
         return lastmeasdoc;
       },
 
@@ -424,12 +419,10 @@ sap.ui.define(
       getCodeTexts: function (codeGroup, oModelText, oInput9) {
         let oSelect = oInput9;
         let oJSONModel = new JSONModel();
-        // console.log(oModelText);
         let oFilter = new Filter("Codegruppe", "EQ", codeGroup);
         oModelText.read("/CodeTextsSet", {
           filters: [oFilter],
           success: function (response) {
-            console.log(response.results);
             oJSONModel.setData(response.results);
             oSelect.setModel(oJSONModel, "CodeTexts");
           }.bind(this),
@@ -439,7 +432,6 @@ sap.ui.define(
         });
       },
       onSave: async function (oEvent) {
-        // console.log(this.oMeasPoints);
         this._oMessageManager.removeAllMessages();
         let that = this;
         let oModelMeasDoc = this.getModel("measurementdocument");
@@ -451,7 +443,8 @@ sap.ui.define(
           null, //vFilters
           mParameters
         );
-        let sinfotext = ""
+        let sinfotext = "";
+        let requestCounter = 0;
 
         Object.entries(this.mPoints).forEach(([key, element]) => {
           //create variable from value
@@ -480,12 +473,29 @@ sap.ui.define(
               };
               var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
               oDocCreate.created().then(function () {
+                requestCounter = requestCounter + 1;
                 // that.newDoc[vMeasuringPoint] = oDocCreate.getProperty("MeasurementDocument");
                 successResult[vMeasuringPoint].measurementDocument = oDocCreate.getProperty("MeasurementDocument");
-                sinfotext = sinfotext + "Measurement Document "+ oDocCreate.getProperty("MeasurementDocument") +" is Created for Measuring Point " + vMeasuringPoint + "\n";
-                console.log(sinfotext);
-              });
+                sinfotext =
+                  sinfotext +
+                  "Measurement Document " +
+                  oDocCreate.getProperty("MeasurementDocument") +
+                  " is Created for Measuring Point " +
+                  vMeasuringPoint +
+                  "\n";
 
+                // chek if the success request count is equal to success reuslt array
+                if (requestCounter == Object.keys(successResult).length) {
+                  MessageBox.information(sinfotext, {
+                    actions: [MessageBox.Action.OK],
+                    emphasizedAction: MessageBox.Action.OK,
+                    onClose: function (sAction) {
+                      // that.resetFields();
+                      window.history.go(-1);
+                    }
+                  });
+                }
+              });
             } else {
               console.log(vMeasuringPoint + " Tidak Diisi");
             }
@@ -503,17 +513,32 @@ sap.ui.define(
               };
               var oDocCreate = measdocumentList.create(oMeasurementDoc, true);
               oDocCreate.created().then(function () {
+                requestCounter = requestCounter + 1;
                 // that.newDoc[vMeasuringPoint] = oDocCreate.getProperty("MeasurementDocument");
                 successResult[vMeasuringPoint].measurementDocument = oDocCreate.getProperty("MeasurementDocument");
-                sinfotext = sinfotext + "Measurement Document "+ oDocCreate.getProperty("MeasurementDocument") +" is Created for Measuring Point " + vMeasuringPoint + "\n";
-                console.log(sinfotext);
+                sinfotext =
+                  sinfotext +
+                  "Measurement Document " +
+                  oDocCreate.getProperty("MeasurementDocument") +
+                  " is Created for Measuring Point " +
+                  vMeasuringPoint +
+                  "\n";
+                // chek if the success request count is equal to success reuslt array
+                if (requestCounter == Object.keys(successResult).length) {
+                  MessageBox.information(sinfotext, {
+                    actions: [MessageBox.Action.OK],
+                    emphasizedAction: MessageBox.Action.OK,
+                    onClose: function (sAction) {
+                      // that.resetFields();
+                      window.history.go(-1);
+                    }
+                  });
+                }
               });
-
             } else {
               console.log(vMeasuringPoint + " Tidak Diisi");
             }
           }
-          // console.log(oMeasurementDoc);
         });
         oModelMeasDoc.submitBatch("batchCreate");
         let successResult = [];
@@ -529,14 +554,13 @@ sap.ui.define(
             successResult[oObject.MeasuringPoint] = { success: success, object: oObject };
           }
         }, this);
-
       },
       openMsgList: function (oEvent) {
-        this.oMessagePopover.openBy(oEvent.getSource());
+        // this.oMessagePopover.openBy(oEvent.getSource());
+        this.oMessagePopover.toggle(oEvent.getSource());
       },
       onCancel: function (oEvent) {
         let that = this;
-        console.log(this.mPoints);
         this.mPoints.forEach((item) => {
           that.byId(item.spanelId).destroy();
         });
