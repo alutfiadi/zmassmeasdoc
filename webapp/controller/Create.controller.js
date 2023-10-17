@@ -103,7 +103,7 @@ sap.ui.define(
        */
       createPanel: function (oItem) {
         let oPage = this.getView().byId("pageCreate");
-        let that = this;
+        const that = this;
         let MeasuringPoint = oItem.MeasuringPoint;
         let MeasuringPointDescription = oItem.MeasuringPointDescription;
         let MeasurementRangeUnit = oItem.MeasurementRangeUnit;
@@ -390,14 +390,18 @@ sap.ui.define(
         let lastmeasdoc = {};
         oDoc.changeParameters({
           $select:
-            "MeasurementDocument,MeasuringPoint,MeasurementReading,MeasurementCounterReading,MsmtCounterReadingDifference,MeasurementReadingInEntryUoM,MsmtDocumentSIUnitOfMeasure,MsmtRdngDate,MsmtRdngTime",
+            "MeasurementDocument,MeasuringPoint,MeasurementReading,MeasurementCounterReading,MsmtCounterReadingDifference,MeasurementReadingInEntryUoM,MeasurementReadingEntryUoM,MsmtDocumentSIUnitOfMeasure,MsmtRdngDate,MsmtRdngTime",
           $filter: sFilter,
           $orderby: "MeasuringPoint,MeasurementDocument desc,MsmtRdngDate desc,MsmtRdngTime desc"
         });
         oDoc.requestContexts(0, 1).then(function (aContexts) {
           aContexts.forEach(function (oContext) {
             // As we have fetched the data already, we can access "Note" through getProperty
-            lastmeasdoc["TotalDiff"] = oContext.getProperty("MeasurementReadingInEntryUoM");
+            if (oContext.getProperty("MsmtDocumentSIUnitOfMeasure") == oContext.getProperty("MeasurementReadingEntryUoM")) {
+              lastmeasdoc["TotalDiff"] = oContext.getProperty("MeasurementReading");
+            } else {
+              lastmeasdoc["TotalDiff"] = oContext.getProperty("MeasurementReadingInEntryUoM");
+            }
             lastmeasdoc["lastdatetime"] = oContext.getProperty("MsmtRdngDate") + " " + oContext.getProperty("MsmtRdngTime");
             lastmeasdoc["lastdatetime"] = new Date(lastmeasdoc["lastdatetime"]);
             oInput7.setValue(lastmeasdoc["TotalDiff"]);

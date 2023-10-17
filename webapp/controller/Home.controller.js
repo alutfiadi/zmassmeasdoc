@@ -16,9 +16,9 @@ sap.ui.define(
     "sap/ui/core/Icon"
   ],
   /**
-     * @param {typeof sap.ui.core.mvc.Controller} Controller
-     */
-  function(
+   * @param {typeof sap.ui.core.mvc.Controller} Controller
+   */
+  function (
     Controller,
     TypeString,
     ColumnListItem,
@@ -37,7 +37,7 @@ sap.ui.define(
     "use strict";
 
     return Controller.extend("zmassmeasdoc.controller.Home", {
-      onInit: function() {
+      onInit: function () {
         // Value Help Dialog standard use case with filter bar without filter suggestions
         var oInputTechnicalObject = this.byId("technicalObject");
         this._oInputTechnicalObject = oInputTechnicalObject;
@@ -46,7 +46,7 @@ sap.ui.define(
         this._oInputobjectname = this.byId("objectname");
       },
 
-      onChangeObjectType: function(oEvent) {
+      onChangeObjectType: function (oEvent) {
         const objectType = this.byId("refObjectType").getSelectedKey();
         let visibilityPM = true;
         if (objectType == "PM") {
@@ -60,7 +60,7 @@ sap.ui.define(
       },
 
       //Handle on Submit
-      onSubmit: function() {
+      onSubmit: function () {
         // var technicalObject = this.byId("technicalObject").getTokens();
         // if (technicalObject.length > 0) {
         //   const equipmentid = technicalObject[0].getKey();
@@ -81,12 +81,13 @@ sap.ui.define(
       },
 
       //Handle Value Help Technical Object
-      handleTechnicalObjectVH: function() {
+      handleTechnicalObjectVH: function () {
+        const that = this;
         this._oBasicSearchField = new SearchField();
         this.loadFragment({
           name: "zmassmeasdoc.fragment.TechnicalObjectVH"
         }).then(
-          function(oDialog) {
+          function (oDialog) {
             // console.log(oDialog);
             var oFilterBar = oDialog.getFilterBar();
             this._oVHD = oDialog;
@@ -113,12 +114,12 @@ sap.ui.define(
             oFilterBar.setBasicSearch(this._oBasicSearchField);
 
             // Trigger filter bar search when the basic search is fired
-            this._oBasicSearchField.attachSearch(function() {
+            this._oBasicSearchField.attachSearch(function () {
               oFilterBar.search();
             });
 
             oDialog.getTableAsync().then(
-              function(oTable) {
+              function (oTable) {
                 oTable.setModel(this.oTehcObjVHModel);
 
                 // For Desktop and tabled the default table is sap.ui.table.Table
@@ -127,7 +128,7 @@ sap.ui.define(
                   oTable.bindAggregation("rows", {
                     path: "/ZC_TECHOBJVH",
                     events: {
-                      dataReceived: function() {
+                      dataReceived: function () {
                         oDialog.update();
                       }
                     }
@@ -167,10 +168,12 @@ sap.ui.define(
                           wrapping: true
                         }),
                         new Label({ text: "{ZTechnicalObjectType}" })
-                      ]
+                      ],
+                      press: [that.onValueHelpOkPress, that],
+                      type: "Active"
                     }),
                     events: {
-                      dataReceived: function() {
+                      dataReceived: function () {
                         oDialog.update();
                       }
                     }
@@ -200,40 +203,43 @@ sap.ui.define(
       },
 
       //Handle when Ok in Dialog is pressed
-      onValueHelpOkPress: function(oEvent) {
+      onValueHelpOkPress: function (oEvent) {
         var aTokens = oEvent.getParameter("tokens");
-        this._oInputTechnicalObject.setTokens(aTokens);
+
+        if (aTokens === undefined) {
+          var oObject = oEvent.getSource().getBindingContext().getObject();
+          var oToken = new sap.m.Token({
+            key: oObject.Equipment,
+            text: oObject.TechnicalObjectDescription + " (" + oObject.TechnicalObjectLabel + ")"
+          });
+          this._oInputTechnicalObject.setTokens([oToken]);
+        } else {
+          // this._oInputRentalObject.setTokens(aTokens);
+          this._oInputTechnicalObject.setTokens(aTokens);
+          var oObject = Object.values(oEvent.getSource()._oSelectedItems.items)[0];
+        }
         this._oVHD.close();
         this.byId("technicalObject").setValueState("None");
 
         //set Object Name
-        this._oInputobjectname.setValue(
-          this._oInputTechnicalObject
-            .getTokens()[0]
-            .mProperties.text.split("(")[0]
-            .trim()
-        );
+        this._oInputobjectname.setValue(this._oInputTechnicalObject.getTokens()[0].mProperties.text.split("(")[0].trim());
 
         //get All data selected
-        let selectedData = Object.values(
-          oEvent.getSource()._oSelectedItems.items
-        );
-        console.log(selectedData[0]);
+        let selectedData = oObject;
+        console.log(selectedData);
         //set object number
-        let selectedKey = selectedData[0].TechnicalObject;
+        let selectedKey = selectedData.TechnicalObject;
         this._oInputobjectnumber.setValue(selectedKey);
 
-        this.getOwnerComponent()
-          .getModel("PassModel")
-          .setProperty("/rentalObject", selectedData[0]);
+        this.getOwnerComponent().getModel("PassModel").setProperty("/rentalObject", selectedData);
       },
 
       //Handle when Filter in Value Help Dialog is search
-      onFilterBarSearch: function(oEvent) {
+      onFilterBarSearch: function (oEvent) {
         var sSearchQuery = this._oBasicSearchField.getValue(),
           aSelectionSet = oEvent.getParameter("selectionSet");
 
-        var aFilters = aSelectionSet.reduce(function(aResult, oControl) {
+        var aFilters = aSelectionSet.reduce(function (aResult, oControl) {
           if (oControl.getValue()) {
             aResult.push(
               new Filter({
@@ -275,10 +281,10 @@ sap.ui.define(
       },
 
       //Filter Table based on Filter in on FilterBarSearch
-      _filterTable: function(oFilter) {
+      _filterTable: function (oFilter) {
         var oVHD = this._oVHD;
 
-        oVHD.getTableAsync().then(function(oTable) {
+        oVHD.getTableAsync().then(function (oTable) {
           if (oTable.bindRows) {
             oTable.getBinding("rows").filter(oFilter);
           }
@@ -292,11 +298,11 @@ sap.ui.define(
       },
 
       //Handle cancel button Value Help Dialog
-      onValueHelpCancelPress: function() {
+      onValueHelpCancelPress: function () {
         this._oVHD.close();
       },
       //Handle close button Value Help Dialog
-      onValueHelpAfterClose: function() {
+      onValueHelpAfterClose: function () {
         this._oVHD.destroy();
       }
     });
